@@ -35,8 +35,8 @@ public class Calculation implements Constants {
 		int referenceX = 0;
 		int referenceY = 0;
 
-		if (currentDino != monty || monty.getStatus() == STATUS.WALK ||
-				monty.getStatus() == STATUS.ATTACK) {
+		if (currentDino.getStatus() == STATUS.WALK ||
+				currentDino.getStatus() == STATUS.ATTACK) {
 			double angle = Math.atan2(currentDino.getMoveToY(),
 					currentDino.getMoveToX());
 

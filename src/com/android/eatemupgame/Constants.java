@@ -37,6 +37,8 @@ public interface Constants {
 	public static final int ENEMY_SPAWN_CHANCE = 15; // 60 fps
 	public static final int ENEMY_CHANGE_DIRECTION_CHANCE = 80;
 	
+	public static final int ANIMATION_PIC_DURATION = 50;
+	
 	public static int MENU_DRAW_COUNTER = 140;
 
 	public static enum STATUS {
