@@ -75,22 +75,6 @@ public class Calculation implements Constants {
 			} else {
 				currentDino.setPosX(currentDino.getPosX() + referenceX);
 				currentDino.setPosY(currentDino.getPosY() + referenceY);
-				
-			/*	
-				System.out.print("Pos: (");
-				System.out.print(currentDino.getPosX());
-				System.out.print("/");
-				System.out.print(currentDino.getPosY());
-				System.out.print(")  ");
-				
-				System.out.print("MoveTo: (");
-				System.out.print(currentDino.getMoveToX());
-				System.out.print("/");
-				System.out.print(currentDino.getMoveToY());
-				System.out.println(")");
-				*/
-				
-				
 			}
 		}
 	}

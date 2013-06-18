@@ -94,7 +94,7 @@ public class MainMenuScreen extends Screen implements Constants {
 		g.drawImage(Assets.button1, 114, 232);
 		g.drawImage(Assets.button2, 314, 232);
 		g.drawImage(Assets.button3, 514, 232);
-		g.drawImage(Assets.musicOn, 650, 0);
+		g.drawImage(Assets.musicButton, 730, 20);
 		
 		menu_draw_counter--;
 		if(menu_draw_counter == 0)

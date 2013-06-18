@@ -7,9 +7,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.Log;
 
 import com.android.framework.Game;
@@ -17,6 +16,8 @@ import com.android.framework.Graphics;
 import com.android.framework.Image;
 import com.android.framework.Input.TouchEvent;
 import com.android.framework.Screen;
+import com.android.eatemupgame.Assets;
+import com.android.eatemupgame.GameScreen.GameState;
 
 public class GameScreen extends Screen implements Constants {
 	enum GameState {
@@ -26,7 +27,7 @@ public class GameScreen extends Screen implements Constants {
 	GameState state = GameState.Ready;
 
 	// Variable Setup
-
+	Paint paint, paint2;
 	Random random;
 	Dino monty;
 
@@ -39,7 +40,7 @@ public class GameScreen extends Screen implements Constants {
 	Draw drawInstance;
 	Calculation calculation;
 	Draw draw;
-	private double game_over_counter;
+	private float game_over_counter;
 
 	private Image backgroundImage, image, dinoImageBreathing1,
 			dinoImageBreathing2, dinoImageBreathing3, dinoImageWalking1,
@@ -47,7 +48,6 @@ public class GameScreen extends Screen implements Constants {
 			Breathing3, Breathing4, Breathing5;
 	private URL base; // for loading the images
 	private Graphics second;
-	private int imageCounter;
 
 	public GameScreen(Game game) {
 		super(game);
@@ -68,44 +68,27 @@ public class GameScreen extends Screen implements Constants {
 			randomColorMap.put(3, "BLUE");
 			randomColorMap.put(4, "RED");
 		}
-		enemies = new Vector<Dino>(); // enemies.add(new Dino());
+		enemies = new Vector<Dino>();
 		background = new Background(BACKGROUND_LEFT, BACKGROUND_TOP);
-		// input = new Input(monty);
-
-		drawInstance = new Draw();
-
 		calculation = new Calculation(monty, enemies, background// , input
 		);
 
-		game_over_counter = GAME_OVER_COUNTER;
+		game_over_counter = GAME_OVER_COUNTER_MAX;
 
 		backgroundImage = Assets.background;
-	}
 
-	/*
-	 * private void loadMap() { ArrayList lines = new ArrayList(); int width =
-	 * 0; int height = 0;
-	 * 
-	 * Scanner scanner = new Scanner(SampleGame.map); while
-	 * (scanner.hasNextLine()) { String line = scanner.nextLine();
-	 * 
-	 * // no more lines to read if (line == null) { break; }
-	 * 
-	 * if (!line.startsWith("!")) { lines.add(line); width = Math.max(width,
-	 * line.length());
-	 * 
-	 * } } height = lines.size();
-	 * 
-	 * for (int j = 0; j < 12; j++) { String line = (String) lines.get(j); for
-	 * (int i = 0; i < width; i++) {
-	 * 
-	 * if (i < line.length()) { char ch = line.charAt(i); Tile t = new Tile(i,
-	 * j, Character.getNumericValue(ch)); tilearray.add(t); }
-	 * 
-	 * } }
-	 * 
-	 * }
-	 */
+		paint = new Paint();
+		paint.setTextSize(30);
+		paint.setTextAlign(Paint.Align.CENTER);
+		paint.setAntiAlias(true);
+		paint.setColor(Color.WHITE);
+
+		paint2 = new Paint();
+		paint2.setTextSize(100);
+		paint2.setTextAlign(Paint.Align.CENTER);
+		paint2.setAntiAlias(true);
+		paint2.setColor(Color.WHITE);
+	}
 
 	@Override
 	public void update(float deltaTime) {
@@ -144,6 +127,7 @@ public class GameScreen extends Screen implements Constants {
 
 			TouchEvent event = touchEvents.get(i);
 
+			
 			if (game.getInput().isTouchDown(i)) {
 				// Log.d("blalba", Integer.toString(event.x));
 
@@ -157,13 +141,21 @@ public class GameScreen extends Screen implements Constants {
 		}
 
 		if (enemies.size() < MAX_ENEMIES) // max amount of enemies
-
-			if (random.nextInt(ENEMY_SPAWN_CHANCE) == 0) {
+		{
+			
+			if (enemies.size() < 1)
 				addNewEnemy();
-			}
-
+			
+			if (enemies.size() < MIN_ENEMIES)
+				if (random.nextInt(ENEMY_SPAWN_CHANCE_MIN) == 0)
+					addNewEnemy();
+					
+			if (random.nextInt(ENEMY_SPAWN_CHANCE) == 0)
+				addNewEnemy();
+			
+		
+		}
 		possibleDirChange();
-
 		calculation.calculate();
 		checkDeadDinos();
 	}
@@ -190,8 +182,8 @@ public class GameScreen extends Screen implements Constants {
 				}
 
 				if (inBounds(event, 0, 240, 800, 240)) {
-					// nullify();
-					// goToMenu();
+					nullify();
+					goToMenu();
 				}
 			}
 		}
@@ -212,7 +204,6 @@ public class GameScreen extends Screen implements Constants {
 
 	}
 
-	// return a new direction for enemys, either -100 to -51 or 51 to 100
 	public int changeDirection() {
 		int direction = random.nextInt(100) - 50; // -50 - 49
 		if (direction < 0)
@@ -315,7 +306,9 @@ public class GameScreen extends Screen implements Constants {
 	public void checkDeadDinos() {
 		checkEnemyDespawn();
 
-		game_over_counter -= 0.017; // sleep timer
+		Log.d("AAAAAAAAAAAAAAAAAAAAAAAAA", (Float.toString(game_over_counter)));
+
+		game_over_counter -= 0.1;
 
 		if (game_over_counter <= 0) {
 			game_over_counter = 0;
@@ -333,12 +326,14 @@ public class GameScreen extends Screen implements Constants {
 	}
 
 	public void checkEnemyEaten(Dino curEnemy) {
-		int x = curEnemy.getPosX() - monty.getPosX();
-		int y = curEnemy.getPosY() - monty.getPosY();
+		int x = curEnemy.getPosX() - monty.getPosX() + background.getPosX();
+		int y = curEnemy.getPosY() - monty.getPosY() + background.getPosY();
 		int r = (int) Math.sqrt(x * x + y * y);
-		if (r < EAT_RADIUS) {
+		if (r < EAT_RADIUS && curEnemy.getStatus() != STATUS.DIE) {
 			curEnemy.setStatus(STATUS.DIE);
 			game_over_counter += GAME_OVER_COUNTER_BONUS;
+			if (game_over_counter > GAME_OVER_COUNTER_MAX)
+				game_over_counter = GAME_OVER_COUNTER_MAX;
 		}
 	}
 
@@ -390,7 +385,7 @@ public class GameScreen extends Screen implements Constants {
 
 	public void drawPlayer(Graphics g) {
 		double angle = calcAngle(monty.getAngle());
-		
+
 		Image drawImage = selectPlayerImage(monty);
 		g.drawRotatedImage(drawImage, monty.getPosX(), monty.getPosY(),
 				(int) angle);
@@ -411,7 +406,7 @@ public class GameScreen extends Screen implements Constants {
 				return Assets.dyingOrange2;
 			}
 
-			if (dino.getStatus() == STATUS.DIE) {
+			if (dino != monty && dino.getStatus() == STATUS.DIE) {
 				enemies.removeElement(dino);
 				return Assets.dyingOrange2;
 			}
@@ -422,6 +417,7 @@ public class GameScreen extends Screen implements Constants {
 			dino.setImageCounter(0);
 		}
 
+		imageCounter = dino.getImageCounter();
 		imageCounter++;
 		dino.setImageCounter(imageCounter);
 
@@ -432,7 +428,7 @@ public class GameScreen extends Screen implements Constants {
 				if (imageCounter >= 0 && imageCounter <= 49)
 					return Assets.breathingOrange1;
 
-				if (imageCounter >= 50 && imageCounter < 100)
+				if (imageCounter >= 50 && imageCounter <= 100)
 					return Assets.breathingOrange2;
 
 			}
@@ -442,7 +438,7 @@ public class GameScreen extends Screen implements Constants {
 				if (imageCounter >= 0 && imageCounter <= 49)
 					return Assets.walkingOrange1;
 
-				if (imageCounter >= 50 && imageCounter < 100)
+				if (imageCounter >= 50 && imageCounter <= 100)
 					return Assets.walkingOrange2;
 			}
 
@@ -451,7 +447,7 @@ public class GameScreen extends Screen implements Constants {
 				if (imageCounter >= 0 && imageCounter <= 49)
 					return Assets.attackingOrange1;
 
-				if (imageCounter >= 50 && imageCounter < 100)
+				if (imageCounter >= 50 && imageCounter <= 100)
 					return Assets.attackingOrange2;
 			}
 
@@ -460,35 +456,72 @@ public class GameScreen extends Screen implements Constants {
 				if (imageCounter >= 0 && imageCounter <= 49)
 					return Assets.dyingOrange1;
 
-				if (imageCounter >= 50 && imageCounter < 100)
+				if (imageCounter >= 50 && imageCounter <= 100)
 					return Assets.dyingOrange2;
 			}
+
 		}
 
-		
 		if (dino != monty) {
+
+			if (dino.getStatus() == STATUS.IDLE)
+				dino.setStatus(STATUS.WALK);
 
 			// draw player walking
 			if (dino.getStatus() == STATUS.WALK) {
 				if (imageCounter >= 0 && imageCounter <= 49)
-					return Assets.walkingOrange1;
+					return Assets.walkingGreen1;
 
-				if (imageCounter >= 50 && imageCounter < 100)
-					return Assets.walkingOrange2;
+				if (imageCounter >= 50 && imageCounter <= 100)
+					return Assets.walkingGreen2;
 			}
 
 			// draw player dying
 			if (dino.getStatus() == STATUS.DIE) {
 				if (imageCounter >= 0 && imageCounter <= 49)
-					return Assets.walkingOrange1;
+					return Assets.dyingGreen1;
 
-				if (imageCounter >= 50 && imageCounter < 100)
-					return Assets.walkingOrange2;
+				if (imageCounter >= 50 && imageCounter <= 100)
+					return Assets.dyingGreen1;
 			}
 		}
-		
 
 		return Assets.dyingOrange2;
+
+	}
+
+	private void drawReadyUI() {
+		Graphics g = game.getGraphics();
+
+		g.drawARGB(155, 0, 0, 0);
+		g.drawString("Tap to Start Monty`s Adventure!.", 400, 240, paint);
+
+	}
+
+	private void drawRunningUI() {
+		Graphics g = game.getGraphics();
+		
+		float hunger = game_over_counter;
+		
+		g.drawRect(30, 30, ((int)hunger) * 2, 15,  -16711936);
+		
+
+	}
+
+	private void drawPausedUI() {
+		Graphics g = game.getGraphics();
+		// Darken the entire screen so you can display the Paused screen.
+		g.drawARGB(155, 0, 0, 0);
+		g.drawString("Resume", 400, 165, paint2);
+		g.drawString("Menu", 400, 360, paint2);
+
+	}
+
+	private void drawGameOverUI() {
+		Graphics g = game.getGraphics();
+		g.drawRect(0, 0, 1281, 801, Color.BLACK);
+		g.drawString("GAME OVER.", 400, 240, paint2);
+		g.drawString("Tap to return.", 400, 290, paint);
 
 	}
 
@@ -500,19 +533,30 @@ public class GameScreen extends Screen implements Constants {
 		drawBackground(g);
 		drawEnemies(g);
 		drawPlayer(g);
+		g.drawImage(Assets.musicButton, 730, 20);
+
+		if (state == GameState.Ready)
+			drawReadyUI();
+		if (state == GameState.Running)
+			drawRunningUI();
+		if (state == GameState.Paused)
+			drawPausedUI();
+		if (state == GameState.GameOver)
+			drawGameOverUI();
 
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
+		if (state == GameState.Running)
+			state = GameState.Paused;
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-
+		if (state == GameState.Paused)
+			state = GameState.Running;
 	}
 
 	@Override
@@ -523,7 +567,27 @@ public class GameScreen extends Screen implements Constants {
 
 	@Override
 	public void backButton() {
+		pause();
+	}
+
+	private void nullify() {
+
+		// Set all variables to null. You will be recreating them in the
+		// constructor.
+		/*
+		 * paint = null; bg1 = null; bg2 = null; robot = null; hb = null; hb2 =
+		 * null; currentSprite = null; character = null; character2 = null;
+		 * character3 = null; heliboy = null; heliboy2 = null; heliboy3 = null;
+		 * heliboy4 = null; heliboy5 = null; anim = null; hanim = null;
+		 */
+
+		// Call garbage collector to clean up memory.
+		System.gc();
+	}
+
+	private void goToMenu() {
 		// TODO Auto-generated method stub
+		game.setScreen(new MainMenuScreen(game));
 
 	}
 

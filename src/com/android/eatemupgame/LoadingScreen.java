@@ -18,9 +18,7 @@ public class LoadingScreen extends Screen {
 		
 		//This is how you would load a sound if you had one.
 		//Assets.click = game.getAudio().createSound("explode.ogg");
-		
 	
-		
 		Assets.menu1 = g.newImage("menu1.png", ImageFormat.RGB565);
 		Assets.menu2 = g.newImage("menu2.png", ImageFormat.RGB565);
 		Assets.menu3 = g.newImage("menu3.png", ImageFormat.RGB565);
@@ -45,15 +43,18 @@ public class LoadingScreen extends Screen {
 		
 		Assets.walkingOrange1 = g.newImage("walkingOrange1.png", ImageFormat.RGB565);
 		Assets.walkingOrange2 = g.newImage("walkingOrange2.png", ImageFormat.RGB565);
+		Assets.walkingGreen1 = g.newImage("walkingGreen1.png", ImageFormat.RGB565);
+		Assets.walkingGreen2 = g.newImage("walkingGreen2.png", ImageFormat.RGB565);
 		
 		Assets.attackingOrange1 = g.newImage("attackingOrange1.png", ImageFormat.RGB565);
 		Assets.attackingOrange2= g.newImage("attackingOrange2.png", ImageFormat.RGB565);
 		
 		Assets.dyingOrange1 = g.newImage("dyingOrange1.png", ImageFormat.RGB565);
 		Assets.dyingOrange2 = g.newImage("dyingOrange2.png", ImageFormat.RGB565);
+		Assets.dyingGreen1 = g.newImage("dyingGreen1.png", ImageFormat.RGB565);
+
 		
-		
-		Assets.musicOn = g.newImage("musicOn.png", ImageFormat.RGB565);
+		Assets.musicButton = g.newImage("musicButton.png", ImageFormat.RGB565);
 		
 		
 		/*Assets.character = g.newImage("character.png", ImageFormat.ARGB4444);

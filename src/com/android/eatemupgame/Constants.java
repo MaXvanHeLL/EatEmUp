@@ -30,11 +30,13 @@ public interface Constants {
 	public static final int ENEMY_SPAWN_DISTANCE_AREA = 200;
 	public static final int ENEMY_DESPAWN_DISTANCE_FROM_SCREEN = 600;
 	
-	public static final double GAME_OVER_COUNTER = 30;
-	public static final double GAME_OVER_COUNTER_BONUS = 5;
+	public static final float GAME_OVER_COUNTER_MAX = 100;
+	public static final float GAME_OVER_COUNTER_BONUS = 15;
 	
-	public static final int MAX_ENEMIES = 200;
-	public static final int ENEMY_SPAWN_CHANCE = 15; // 60 fps
+	public static final int MAX_ENEMIES = 10;
+	public static final int MIN_ENEMIES = 3;
+	public static final int ENEMY_SPAWN_CHANCE = 30; // fps
+	public static final int ENEMY_SPAWN_CHANCE_MIN = 8;
 	public static final int ENEMY_CHANGE_DIRECTION_CHANCE = 80;
 	
 	public static final int ANIMATION_PIC_DURATION = 50;
