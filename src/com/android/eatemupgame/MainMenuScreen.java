@@ -112,6 +112,7 @@ public class MainMenuScreen extends Screen implements Constants {
 		else
 			g.drawImage(Assets.musicOFF, 730, 20);
 
+
 		menu_draw_counter--;
 		if (menu_draw_counter == 0)
 			menu_draw_counter = MENU_DRAW_COUNTER;
