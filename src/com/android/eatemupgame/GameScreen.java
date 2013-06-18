@@ -504,7 +504,10 @@ public class GameScreen extends Screen implements Constants {
 		float hunger = game_over_counter;
 		
 		g.drawRect(30, 30, ((int)hunger) * 2, 15,  -16711936);
-		
+		g.drawLine(28, 28, (int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 28,  -16777216);
+		g.drawLine(28, 45, (int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 45,  -16777216);
+		g.drawLine(28, 28, 28, 45,  -16777216);
+		g.drawLine((int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 28, (int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 45,  -16777216);
 
 	}
 
