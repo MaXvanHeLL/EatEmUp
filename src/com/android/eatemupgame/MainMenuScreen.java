@@ -2,6 +2,7 @@ package com.android.eatemupgame;
 
 import java.util.List;
 
+import android.content.res.Resources.Theme;
 import android.util.Log;
 
 import com.android.framework.Game;
@@ -27,7 +28,6 @@ public class MainMenuScreen extends Screen implements Constants {
 			TouchEvent event = touchEvents.get(i);
 
 			Log.d("XXXXXX", Integer.toString(event.x));
-			Log.d("YYYYYY", Integer.toString(event.y));
 
 			if (event.type == TouchEvent.TOUCH_UP) {
 
@@ -51,13 +51,11 @@ public class MainMenuScreen extends Screen implements Constants {
 				}
 				if (inBounds(event, 700, 0, 800, 100)
 						&& Assets.theme.isPlaying()) {
-					Log.d("YYYYYY", "OOOOOOOFFFFFF");
 					Assets.theme.stop();
 				}
 
 				else if (inBounds(event, 700, 0, 800, 100)
 						&& Assets.theme.isStopped()) {
-					Log.d("YYYYYY", "OOOOOOOONNNNNNN");
 					Assets.theme.play();
 				}
 			}
@@ -104,10 +102,15 @@ public class MainMenuScreen extends Screen implements Constants {
 			g.drawImage(Assets.menu13, 0, 0);
 		if (menu_draw_counter <= 10 && menu_draw_counter > 0)
 			g.drawImage(Assets.menu14, 0, 0);
-		g.drawImage(Assets.button1, 114, 232);
-		g.drawImage(Assets.button2, 314, 232);
-		g.drawImage(Assets.button3, 514, 232);
-		g.drawImage(Assets.musicButton, 730, 20);
+
+		g.drawImage(Assets.buttonUnpressed1, 114, 232);
+		g.drawImage(Assets.buttonUnpressed2, 314, 232);
+		g.drawImage(Assets.buttonUnpressed3, 514, 232);
+
+		if (Assets.theme.isPlaying())
+			g.drawImage(Assets.musicON, 730, 20);
+		else
+			g.drawImage(Assets.musicOFF, 730, 20);
 
 		menu_draw_counter--;
 		if (menu_draw_counter == 0)

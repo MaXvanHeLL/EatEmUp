@@ -27,7 +27,7 @@ public class GameScreen extends Screen implements Constants {
 	GameState state = GameState.Ready;
 
 	// Variable Setup
-	Paint paint, paint2;
+	Paint paint, paint2, paint3, paint4, paint5;
 	Random random;
 	Dino monty;
 
@@ -85,10 +85,28 @@ public class GameScreen extends Screen implements Constants {
 		paint.setColor(Color.WHITE);
 
 		paint2 = new Paint();
-		paint2.setTextSize(100);
+		paint2.setTextSize(75);
 		paint2.setTextAlign(Paint.Align.CENTER);
 		paint2.setAntiAlias(true);
 		paint2.setColor(Color.WHITE);
+		
+		paint3 = new Paint();
+		paint3.setTextSize(75);
+		paint3.setTextAlign(Paint.Align.CENTER);
+		paint3.setAntiAlias(true);
+		paint3.setColor(Color.GREEN);
+		
+		paint4 = new Paint();
+		paint4.setTextSize(40);
+		paint4.setTextAlign(Paint.Align.CENTER);
+		paint4.setAntiAlias(true);
+		paint4.setColor(Color.BLACK);
+		
+		paint5 = new Paint();
+		paint5.setTextSize(40);
+		paint5.setTextAlign(Paint.Align.CENTER);
+		paint5.setAntiAlias(true);
+		paint5.setColor(Color.RED);
 	}
 
 	@Override
@@ -122,7 +140,13 @@ public class GameScreen extends Screen implements Constants {
 	}
 
 	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
+		
+		if(Assets.eat.isPlaying())
+		{
+			Log.d("MMMMMMMMMMMMMMM","MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+		}
 
+		
 		int len = touchEvents.size();
 
 		Log.d("touch events", Integer.toString(len));
@@ -191,15 +215,18 @@ public class GameScreen extends Screen implements Constants {
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_UP) {
-				if (inBounds(event, 0, 0, 800, 240)) {
+				if (inBounds(event, 0, 0, 800, 340)) {
 
 					if (!inBounds(event, 0, 0, 35, 35)) {
+						Log.d("BLAAAAAA","RESUUUUUME");
 						resume();
 					}
 				}
 
-				if (inBounds(event, 0, 240, 800, 240)) {
+				if (inBounds(event, 0, 300, 800, 240)) {
 					nullify();
+					Log.d("BLAAAAAA","MENUUUUUUU");
+					Assets.theme.play();
 					goToMenu();
 				}
 			}
@@ -348,7 +375,14 @@ public class GameScreen extends Screen implements Constants {
 		int y = curEnemy.getPosY() - monty.getPosY() + background.getPosY();
 		int r = (int) Math.sqrt(x * x + y * y);
 		if (r < EAT_RADIUS && curEnemy.getStatus() != STATUS.DIE) {
+			
+			
 			score++;
+			
+			Assets.eat.initializeMusic();
+			Assets.eat.play();
+			
+			
 			curEnemy.setStatus(STATUS.DIE);
 			game_over_counter += GAME_OVER_COUNTER_BONUS;
 			if (game_over_counter > GAME_OVER_COUNTER_MAX)
@@ -530,6 +564,9 @@ public class GameScreen extends Screen implements Constants {
 		g.drawLine(28, 28, 28, 45, -16777216);
 		g.drawLine((int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 28,
 				(int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 45, -16777216);
+		
+		g.drawString("Score:", 400, 50, paint4);
+		g.drawString(Integer.toString(score), 480, 50, paint5);
 
 	}
 
@@ -537,8 +574,10 @@ public class GameScreen extends Screen implements Constants {
 		Graphics g = game.getGraphics();
 		// Darken the entire screen so you can display the Paused screen.
 		g.drawARGB(155, 0, 0, 0);
-		g.drawString("Resume", 400, 165, paint2);
-		g.drawString("Menu", 400, 360, paint2);
+		g.drawString("Resume", 400,260, paint2);
+		g.drawString("Menu", 400, 400, paint2);
+		g.drawString("Current Score:", 350, 100, paint2);
+		g.drawString(Integer.toString(score), 650, 100, paint3);
 
 	}
 
@@ -546,6 +585,8 @@ public class GameScreen extends Screen implements Constants {
 		Graphics g = game.getGraphics();
 		g.drawRect(0, 0, 1281, 801, Color.BLACK);
 		g.drawString("GAME OVER.", 400, 240, paint2);
+		g.drawString("Total Score:", 350, 100, paint2);
+		g.drawString(Integer.toString(score), 710, 100, paint3);
 		g.drawString("Tap to return.", 400, 290, paint);
 
 	}
@@ -558,7 +599,10 @@ public class GameScreen extends Screen implements Constants {
 		drawBackground(g);
 		drawEnemies(g);
 		drawPlayer(g);
-		g.drawImage(Assets.musicButton, 730, 20);
+		if (Assets.theme.isPlaying())
+			g.drawImage(Assets.musicON, 730, 20);
+		else
+			g.drawImage(Assets.musicOFF, 730, 20);
 
 		if (state == GameState.Ready)
 			drawReadyUI();
@@ -573,15 +617,18 @@ public class GameScreen extends Screen implements Constants {
 
 	@Override
 	public void pause() {
-		if (state == GameState.Running)
+		if (state == GameState.Running) {
 			state = GameState.Paused;
-
+			Assets.theme.stop();
+		}
 	}
 
 	@Override
 	public void resume() {
-		if (state == GameState.Paused)
+		if (state == GameState.Paused) {
 			state = GameState.Running;
+			Assets.theme.play();
+		}
 	}
 
 	@Override

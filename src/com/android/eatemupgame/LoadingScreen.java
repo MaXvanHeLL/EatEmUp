@@ -34,9 +34,13 @@ public class LoadingScreen extends Screen {
 		Assets.menu13 = g.newImage("menu13.png", ImageFormat.RGB565);
 		Assets.menu14 = g.newImage("menu14.png", ImageFormat.RGB565);
 		
-		Assets.button1 = g.newImage("button1.png", ImageFormat.RGB565);
-		Assets.button2 = g.newImage("button2.png", ImageFormat.RGB565);
-		Assets.button3 = g.newImage("button3.png", ImageFormat.RGB565);
+		Assets.buttonUnpressed1 = g.newImage("buttonUnpressed1.png", ImageFormat.RGB565);
+		Assets.buttonUnpressed2 = g.newImage("buttonUnpressed2.png", ImageFormat.RGB565);
+		Assets.buttonUnpressed3 = g.newImage("buttonUnpressed3.png", ImageFormat.RGB565);
+		
+		Assets.buttonPressed1 = g.newImage("buttonPressed1.png", ImageFormat.RGB565);
+		Assets.buttonPressed2 = g.newImage("buttonPressed2.png", ImageFormat.RGB565);
+		Assets.buttonPressed3 = g.newImage("buttonPressed3.png", ImageFormat.RGB565);
 		
 		Assets.breathingOrange1 = g.newImage("breathingOrange1.png", ImageFormat.RGB565);
 		Assets.breathingOrange2= g.newImage("breathingOrange2.png", ImageFormat.RGB565);
@@ -54,7 +58,8 @@ public class LoadingScreen extends Screen {
 		Assets.dyingGreen1 = g.newImage("dyingGreen1.png", ImageFormat.RGB565);
 
 		
-		Assets.musicButton = g.newImage("musicButton.png", ImageFormat.RGB565);
+		Assets.musicON = g.newImage("musicON.png", ImageFormat.RGB565);
+		Assets.musicOFF = g.newImage("musicOFF.png", ImageFormat.RGB565);
 		
 		
 		//Assets.background = g.newImage("background.png", ImageFormat.RGB565);
