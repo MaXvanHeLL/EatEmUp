@@ -8,6 +8,7 @@ public class Assets {
 
 	public static Image menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8, menu9, menu10, menu11, menu12, menu13, menu14;
 	public static Image buttonUnpressed1, buttonUnpressed2, buttonUnpressed3, buttonPressed1, buttonPressed2, buttonPressed3, background,  splash, musicON, musicOFF;
+
 	public static Image breathingOrange1, breathingOrange2;
 	public static Image walkingOrange1, walkingOrange2;
 	public static Image attackingOrange1, attackingOrange2, attackingOrange3;
