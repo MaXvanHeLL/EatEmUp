@@ -384,7 +384,6 @@ public class GameScreen extends Screen implements Constants {
 			
 			
 			score++;
-			
 			Assets.eat.initializeMusic();
 			Assets.eat.play();
 			
@@ -754,7 +753,6 @@ public class GameScreen extends Screen implements Constants {
 			state = GameState.Running;
 			Assets.theme.play();
 		}
-
 	}
 
 	@Override
@@ -770,15 +768,18 @@ public class GameScreen extends Screen implements Constants {
 
 	private void nullify() {
 
-		// Set all variables to null. You will be recreating them in the
-		// constructor.
-		/*
-		 * paint = null; bg1 = null; bg2 = null; robot = null; hb = null; hb2 =
-		 * null; currentSprite = null; character = null; character2 = null;
-		 * character3 = null; heliboy = null; heliboy2 = null; heliboy3 = null;
-		 * heliboy4 = null; heliboy5 = null; anim = null; hanim = null;
-		 */
-
+		paint = null;
+		paint2 = null;
+		paint3 = null;
+		paint4 = null;
+		paint5 = null;
+		random = null;
+		monty = null;
+		randomColorMap = null;
+		enemies = null;
+		background = null;
+		calculation = null;
+		
 		// Call garbage collector to clean up memory.
 		System.gc();
 	}
