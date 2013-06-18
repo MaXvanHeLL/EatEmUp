@@ -7,9 +7,11 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.Display;
 
 import com.android.framework.Game;
 import com.android.framework.Graphics;
@@ -63,11 +65,10 @@ public class GameScreen extends Screen implements Constants {
 		// adding the color Map just temporary
 		randomColorMap = new HashMap<Integer, String>();
 		{
-			randomColorMap.put(0, "ORANGE");
-			randomColorMap.put(1, "BROWN");
-			randomColorMap.put(2, "GREEN");
-			randomColorMap.put(3, "BLUE");
-			randomColorMap.put(4, "RED");
+			randomColorMap.put(0, "GREEN");
+			randomColorMap.put(1, "YELLOW");
+			randomColorMap.put(2, "BLUE");
+			randomColorMap.put(3, "RED");
 		}
 		enemies = new Vector<Dino>();
 		background = new Background(BACKGROUND_LEFT, BACKGROUND_TOP);
@@ -131,9 +132,7 @@ public class GameScreen extends Screen implements Constants {
 
 			TouchEvent event = touchEvents.get(i);
 
-			// game.getInput().isTouchDown(i)
 			if (game.getInput().isTouchDown(i) || len > 0) {
-				// Log.d("blalba", "true");
 
 				monty.setMoveToX(event.x - SCREEN_RESOLUTION_X / 2);
 				monty.setMoveToY(event.y - SCREEN_RESOLUTION_Y / 2);
@@ -145,13 +144,11 @@ public class GameScreen extends Screen implements Constants {
 			if (event.type == TouchEvent.TOUCH_UP) {
 				if (inBounds(event, 700, 0, 800, 100)
 						&& Assets.theme.isPlaying()) {
-					Log.d("YYYYYY", "OOOOOOOFFFFFF");
 					Assets.theme.stop();
 				}
 
 				else if (inBounds(event, 700, 0, 800, 100)
 						&& Assets.theme.isStopped()) {
-					Log.d("YYYYYY", "OOOOOOOONNNNNNN");
 					Assets.theme.play();
 				}
 			}
@@ -160,7 +157,7 @@ public class GameScreen extends Screen implements Constants {
 		if (enemies.size() < MAX_ENEMIES) // max amount of enemies
 		{
 
-			if (enemies.size() < 1)
+			if (enemies.size() < 2)
 				addNewEnemy();
 
 			if (enemies.size() < MIN_ENEMIES)
@@ -350,6 +347,7 @@ public class GameScreen extends Screen implements Constants {
 		if (r < EAT_RADIUS && curEnemy.getStatus() != STATUS.DIE) {
 			score++;
 			curEnemy.setStatus(STATUS.DIE);
+			monty.setStatus(STATUS.ATTACK);
 			game_over_counter += GAME_OVER_COUNTER_BONUS;
 			if (game_over_counter > GAME_OVER_COUNTER_MAX)
 				game_over_counter = GAME_OVER_COUNTER_MAX;
@@ -395,7 +393,7 @@ public class GameScreen extends Screen implements Constants {
 
 			double angle = calcAngle(curEnemy.getAngle());
 
-			Image drawImage = selectPlayerImage(curEnemy);
+			Image drawImage = selectDinoImage(curEnemy);
 			g.drawRotatedImage(drawImage,
 					curEnemy.getPosX() + background.getPosX(),
 					curEnemy.getPosY() + background.getPosY(), (int) angle);
@@ -405,107 +403,194 @@ public class GameScreen extends Screen implements Constants {
 	public void drawPlayer(Graphics g) {
 		double angle = calcAngle(monty.getAngle());
 
-		Image drawImage = selectPlayerImage(monty);
+		Image drawImage = selectDinoImage(monty);
 		g.drawRotatedImage(drawImage, monty.getPosX(), monty.getPosY(),
 				(int) angle);
 	}
 
 	private double calcAngle(double Angle) {
-		return (195 + ((Angle + Math.PI) / (2 * Math.PI)) * 360) % 360;
+		return (202 + ((Angle + Math.PI) / (2 * Math.PI)) * 360) % 360;
 	}
 
-	public Image selectPlayerImage(Dino dino) {
-		// imageCounter = drawInstance.getDrawImageCounter();
+	public Image selectDinoImage(Dino dino) {
 		int imageCounter = dino.getImageCounter();
-
-		// set back the draw Counter for different pictures
-		if (imageCounter == 100) {
-			if (dino == monty && dino.getStatus() == STATUS.DIE) {
-				state = GameState.GameOver;
-				return Assets.dyingOrange2;
-			}
-
-			if (dino != monty && dino.getStatus() == STATUS.DIE) {
-				enemies.removeElement(dino);
-				return Assets.dyingOrange2;
-			}
-
-			if (dino == monty && dino.getStatus() == STATUS.ATTACK)
-				dino.setStatus(STATUS.IDLE);
-
-			dino.setImageCounter(0);
-		}
-
-		imageCounter = dino.getImageCounter();
 		imageCounter++;
 		dino.setImageCounter(imageCounter);
 
-		if (dino == monty) {
+		if (dino == monty)
+			return selectMontyImage();
 
-			// draw player idle
-			if (dino.getStatus() == STATUS.IDLE) {
-				if (imageCounter >= 0 && imageCounter <= 49)
-					return Assets.breathingOrange1;
+		if (dino != monty)
+			return selectEnemyImage(dino);
 
-				if (imageCounter >= 50 && imageCounter <= 100)
-					return Assets.breathingOrange2;
+		return Assets.dummyPic;
+	}
 
-			}
+	
+	private Image selectMontyImage()
+	{
+		
+		int imageCounter = monty.getImageCounter();
+		
+		// draw player idle
+		if (monty.getStatus() == STATUS.IDLE) {
+			if (imageCounter >= ANIMATION_PIC_DURATION * 2 - 1)
+				monty.setImageCounter(0);
+			
+			if (imageCounter >= 0 && imageCounter < ANIMATION_PIC_DURATION)
+				return Assets.breathingOrange1;
 
-			// draw player walking
-			if (dino.getStatus() == STATUS.WALK) {
-				if (imageCounter >= 0 && imageCounter <= 49)
-					return Assets.walkingOrange1;
-
-				if (imageCounter >= 50 && imageCounter <= 100)
-					return Assets.walkingOrange2;
-			}
-
-			// draw player attacking
-			if (dino.getStatus() == STATUS.ATTACK) {
-				if (imageCounter >= 0 && imageCounter <= 49)
-					return Assets.attackingOrange1;
-
-				if (imageCounter >= 50 && imageCounter <= 100)
-					return Assets.attackingOrange2;
-			}
-
-			// draw player dying
-			if (dino.getStatus() == STATUS.DIE) {
-				if (imageCounter >= 0 && imageCounter <= 49)
-					return Assets.dyingOrange1;
-
-				if (imageCounter >= 50 && imageCounter <= 100)
-					return Assets.dyingOrange2;
-			}
-
+			if (imageCounter >= ANIMATION_PIC_DURATION
+					&& imageCounter < ANIMATION_PIC_DURATION * 2)
+				return Assets.breathingOrange2;
 		}
 
-		if (dino != monty) {
+		// draw player walking
+		if (monty.getStatus() == STATUS.WALK) {
+			if (imageCounter >= ANIMATION_PIC_DURATION * 2 - 1)
+				monty.setImageCounter(0);
+			
+			if (imageCounter >= 0 && imageCounter < ANIMATION_PIC_DURATION)
+				return Assets.walkingOrange1;
 
-			if (dino.getStatus() == STATUS.IDLE)
-				dino.setStatus(STATUS.WALK);
-
-			// draw player walking
-			if (dino.getStatus() == STATUS.WALK) {
-				if (imageCounter >= 0 && imageCounter <= 49)
-					return Assets.walkingGreen1;
-
-				if (imageCounter >= 50 && imageCounter <= 100)
-					return Assets.walkingGreen2;
-			}
-
-			// draw player dying
-			if (dino.getStatus() == STATUS.DIE) {
-				if (imageCounter >= 0 && imageCounter <= 49)
-					return Assets.dyingGreen1;
-
-				if (imageCounter >= 50 && imageCounter <= 100)
-					return Assets.dyingGreen1;
-			}
+			if (imageCounter >= ANIMATION_PIC_DURATION
+					&& imageCounter < ANIMATION_PIC_DURATION * 2)
+				return Assets.walkingOrange2;
 		}
 
-		return Assets.dyingOrange2;
+		// draw player attacking
+		if (monty.getStatus() == STATUS.ATTACK) {
+			if (imageCounter >= ANIMATION_PIC_DURATION * 5 - 1)
+			{
+				monty.setImageCounter(0);
+				monty.setStatus(STATUS.WALK);
+			}
+			
+			if (imageCounter >= 0 && imageCounter < ANIMATION_PIC_DURATION)
+				return Assets.attackingOrange1;
+
+			if (imageCounter >= ANIMATION_PIC_DURATION
+					&& imageCounter < ANIMATION_PIC_DURATION * 2)
+				return Assets.attackingOrange2;
+			
+			if (imageCounter >= ANIMATION_PIC_DURATION * 2
+					&& imageCounter < ANIMATION_PIC_DURATION * 3)
+				return Assets.attackingOrange3;
+			
+			if (imageCounter >= ANIMATION_PIC_DURATION * 3
+					&& imageCounter < ANIMATION_PIC_DURATION * 4)
+				return Assets.attackingOrange2;
+			
+			if (imageCounter >= ANIMATION_PIC_DURATION * 4
+					&& imageCounter < ANIMATION_PIC_DURATION * 5)
+				return Assets.attackingOrange1;
+		}
+
+		// draw player dying
+		if (monty.getStatus() == STATUS.DIE) {
+			if (imageCounter >= ANIMATION_PIC_DURATION * 4)
+			{
+				state = GameState.GameOver;
+				return Assets.dummyPic;
+			}
+			
+			if (imageCounter >= 0 && imageCounter < ANIMATION_PIC_DURATION)
+				return Assets.dyingOrange1;
+
+			if (imageCounter >= ANIMATION_PIC_DURATION
+					&& imageCounter < ANIMATION_PIC_DURATION * 2)
+				return Assets.dyingOrange2;
+			
+			if (imageCounter >= ANIMATION_PIC_DURATION * 2
+					&& imageCounter < ANIMATION_PIC_DURATION * 3)
+				return Assets.dyingOrange3;
+			
+			if (imageCounter >= ANIMATION_PIC_DURATION * 3
+					&& imageCounter < ANIMATION_PIC_DURATION * 4)
+				return Assets.dyingOrange4;
+		}
+
+		return Assets.dummyPic;
+	}
+	
+	
+	
+	private Image selectEnemyImage(Dino dino) {
+
+		if (dino.getColor() == randomColorMap.get(0)) {
+			return selectEnemyImageColor(dino, Assets.walkingGreen1,
+					Assets.walkingGreen2, Assets.dyingGreen1,
+					Assets.dyingGreen2, Assets.dyingGreen3, Assets.dyingEnemy4);
+		}
+
+		else if (dino.getColor() == randomColorMap.get(1)) {
+			return selectEnemyImageColor(dino, Assets.walkingYellow1,
+					Assets.walkingYellow2, Assets.dyingYellow1,
+					Assets.dyingYellow2, Assets.dyingYellow3,
+					Assets.dyingEnemy4);
+		}
+
+		else if (dino.getColor() == randomColorMap.get(2)) {
+			return selectEnemyImageColor(dino, Assets.walkingBlue1,
+					Assets.walkingBlue2, Assets.dyingBlue1, Assets.dyingBlue2,
+					Assets.dyingBlue3, Assets.dyingEnemy4);
+		}
+
+		else if (dino.getColor() == randomColorMap.get(3)) {
+			return selectEnemyImageColor(dino, Assets.walkingRed1,
+					Assets.walkingRed2, Assets.dyingRed1, Assets.dyingRed2,
+					Assets.dyingRed3, Assets.dyingEnemy4);
+		}
+		
+		return Assets.dummyPic;
+	}
+
+	private Image selectEnemyImageColor(Dino dino, Image walking1, Image walking2,
+			Image dying1, Image dying2, Image dying3, Image dying4) {
+
+		int imageCounter = dino.getImageCounter();
+
+		if (dino.getStatus() == STATUS.IDLE)
+			dino.setStatus(STATUS.WALK);
+
+		// draw green walking
+		if (dino.getStatus() == STATUS.WALK) {
+			if (imageCounter >= ANIMATION_PIC_DURATION * 4 - 1)
+				dino.setImageCounter(0);
+
+			if (imageCounter >= 0 && imageCounter < ANIMATION_PIC_DURATION * 2)
+				return walking1;
+
+			if (imageCounter >= ANIMATION_PIC_DURATION * 2
+					&& imageCounter < ANIMATION_PIC_DURATION * 4)
+				return walking2;
+		}
+
+		// draw green dying
+		if (dino.getStatus() == STATUS.DIE) {
+			if (imageCounter >= ANIMATION_PIC_DURATION * 4)
+			{
+				enemies.removeElement(dino);
+				return Assets.dummyPic;
+			}
+
+			if (imageCounter >= 0 && imageCounter < ANIMATION_PIC_DURATION)
+				return dying1;
+
+			if (imageCounter >= ANIMATION_PIC_DURATION
+					&& imageCounter < ANIMATION_PIC_DURATION * 2)
+				return dying2;
+
+			if (imageCounter >= ANIMATION_PIC_DURATION * 2
+					&& imageCounter < ANIMATION_PIC_DURATION * 3)
+				return dying3;
+
+			if (imageCounter >= ANIMATION_PIC_DURATION * 3
+					&& imageCounter < ANIMATION_PIC_DURATION * 4)
+				return dying4;
+		}
+		
+		return Assets.dummyPic;
 
 	}
 
