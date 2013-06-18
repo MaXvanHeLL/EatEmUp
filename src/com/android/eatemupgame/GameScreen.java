@@ -159,7 +159,7 @@ public class GameScreen extends Screen implements Constants {
 
 
 			
-			if (game.getInput().isTouchDown(i)) {
+			if (game.getInput().isTouchDown(i) || len > 0) {
 				Log.d("blalba", Integer.toString(event.x));
 
 				// Log.d("blalba", Integer.toString(event.x));
@@ -391,6 +391,7 @@ public class GameScreen extends Screen implements Constants {
 			
 			curEnemy.setStatus(STATUS.DIE);
 			monty.setStatus(STATUS.ATTACK);
+			monty.setImageCounter(0);
 			game_over_counter += GAME_OVER_COUNTER_BONUS;
 			if (game_over_counter > GAME_OVER_COUNTER_MAX)
 				game_over_counter = GAME_OVER_COUNTER_MAX;
@@ -488,18 +489,43 @@ public class GameScreen extends Screen implements Constants {
 				return Assets.breathingOrange2;
 		}
 
-		// draw player walking
-		if (monty.getStatus() == STATUS.WALK) {
-			if (imageCounter >= ANIMATION_PIC_DURATION * 2 - 1)
-				monty.setImageCounter(0);
-			
-			if (imageCounter >= 0 && imageCounter < ANIMATION_PIC_DURATION)
-				return Assets.walkingOrange1;
+		  // draw player walking
+		  if (monty.getStatus() == STATUS.WALK) {
+		   if (imageCounter >= ANIMATION_PIC_DURATION * 16 - 1)
+		    monty.setImageCounter(0);
+		   
+		   if (imageCounter >= 0 && imageCounter < ANIMATION_PIC_DURATION * 2)
+		    return Assets.walkingOrange1;
 
-			if (imageCounter >= ANIMATION_PIC_DURATION
-					&& imageCounter < ANIMATION_PIC_DURATION * 2)
-				return Assets.walkingOrange2;
-		}
+		   if (imageCounter >= ANIMATION_PIC_DURATION * 2
+		     && imageCounter < ANIMATION_PIC_DURATION * 4)
+		    return Assets.walkingOrange21;
+		   
+		   if (imageCounter >= ANIMATION_PIC_DURATION * 4
+		     && imageCounter < ANIMATION_PIC_DURATION * 6)
+		    return Assets.walkingOrange31;
+		   
+		   if (imageCounter >= ANIMATION_PIC_DURATION * 6
+		     && imageCounter < ANIMATION_PIC_DURATION * 8)
+		    return Assets.walkingOrange21;
+		   
+		   if (imageCounter >= ANIMATION_PIC_DURATION * 8
+		     && imageCounter < ANIMATION_PIC_DURATION * 10)
+		    return Assets.walkingOrange1;
+		   
+		   if (imageCounter >= ANIMATION_PIC_DURATION * 10
+		     && imageCounter < ANIMATION_PIC_DURATION * 12)
+		    return Assets.walkingOrange22;
+		   
+		   if (imageCounter >= ANIMATION_PIC_DURATION * 12
+		     && imageCounter < ANIMATION_PIC_DURATION * 14)
+		    return Assets.walkingOrange32;
+		   
+		   if (imageCounter >= ANIMATION_PIC_DURATION * 14
+		     && imageCounter < ANIMATION_PIC_DURATION * 16)
+		    return Assets.walkingOrange22;
+		     
+		  }
 
 		// draw player attacking
 		if (monty.getStatus() == STATUS.ATTACK) {

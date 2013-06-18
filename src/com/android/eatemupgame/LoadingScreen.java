@@ -47,7 +47,10 @@ public class LoadingScreen extends Screen {
 		Assets.breathingOrange1 = g.newImage("breathingOrange1.png", ImageFormat.RGB565);
 		Assets.breathingOrange2= g.newImage("breathingOrange2.png", ImageFormat.RGB565);
 		Assets.walkingOrange1 = g.newImage("walkingOrange1.png", ImageFormat.RGB565);
-		Assets.walkingOrange2 = g.newImage("walkingOrange2.png", ImageFormat.RGB565);
+		  Assets.walkingOrange21 = g.newImage("walkingOrange21.png", ImageFormat.RGB565);
+		  Assets.walkingOrange22 = g.newImage("walkingOrange22.png", ImageFormat.RGB565);
+		  Assets.walkingOrange31 = g.newImage("walkingOrange31.png", ImageFormat.RGB565);
+		  Assets.walkingOrange32 = g.newImage("walkingOrange32.png", ImageFormat.RGB565);
 		Assets.attackingOrange1 = g.newImage("attackingOrange1.png", ImageFormat.RGB565);
 		Assets.attackingOrange2= g.newImage("attackingOrange2.png", ImageFormat.RGB565);
 		Assets.attackingOrange3= g.newImage("attackingOrange3.png", ImageFormat.RGB565);
