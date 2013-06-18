@@ -14,11 +14,9 @@ public class MainMenuScreen extends Screen implements Constants {
 	public MainMenuScreen(Game game) {
 		super(game);
 	}
-	private int menu_draw_counter = MENU_DRAW_COUNTER;
-	
 
-	
-	
+	private int menu_draw_counter = MENU_DRAW_COUNTER;
+
 	@Override
 	public void update(float deltaTime) {
 		Graphics g = game.getGraphics();
@@ -27,30 +25,45 @@ public class MainMenuScreen extends Screen implements Constants {
 		int len = touchEvents.size();
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
-			
+
 			Log.d("XXXXXX", Integer.toString(event.x));
 			Log.d("YYYYYY", Integer.toString(event.y));
-			
+
 			if (event.type == TouchEvent.TOUCH_UP) {
 
 				if (inBounds(event, 114, 232, 254, 390)) {
 					Log.d("YYYYYY", "TOUCHED!");
-					Assets.background = g.newImage("background1.png", ImageFormat.RGB565);
+					Assets.background = g.newImage("background1.png",
+							ImageFormat.RGB565);
 					game.setScreen(new GameScreen(game));
 				}
 				if (inBounds(event, 314, 232, 454, 390)) {
 					Log.d("YYYYYY", "TOUCHED!");
-					Assets.background = g.newImage("background2.png", ImageFormat.RGB565);
+					Assets.background = g.newImage("background2.png",
+							ImageFormat.RGB565);
 					game.setScreen(new GameScreen(game));
 				}
 				if (inBounds(event, 514, 232, 654, 390)) {
 					Log.d("YYYYYY", "TOUCHED!");
-					Assets.background = g.newImage("background3.png", ImageFormat.RGB565);
+					Assets.background = g.newImage("background3.png",
+							ImageFormat.RGB565);
 					game.setScreen(new GameScreen(game));
+				}
+				if (inBounds(event, 700, 0, 800, 100)
+						&& Assets.theme.isPlaying()) {
+					Log.d("YYYYYY", "OOOOOOOFFFFFF");
+					Assets.theme.stop();
+				}
+
+				else if (inBounds(event, 700, 0, 800, 100)
+						&& Assets.theme.isStopped()) {
+					Log.d("YYYYYY", "OOOOOOOONNNNNNN");
+					Assets.theme.play();
 				}
 			}
 		}
 	}
+
 	private boolean inBounds(TouchEvent event, int x, int y, int width,
 			int height) {
 		if (event.x > x && event.x < x + width - 1 && event.y > y
@@ -63,45 +76,43 @@ public class MainMenuScreen extends Screen implements Constants {
 	@Override
 	public void paint(float deltaTime) {
 		Graphics g = game.getGraphics();
-		if(menu_draw_counter <=140 && menu_draw_counter > 130)
+		if (menu_draw_counter <= 140 && menu_draw_counter > 130)
 			g.drawImage(Assets.menu1, 0, 0);
-		if(menu_draw_counter <= 130 && menu_draw_counter > 120)
+		if (menu_draw_counter <= 130 && menu_draw_counter > 120)
 			g.drawImage(Assets.menu2, 0, 0);
-		if(menu_draw_counter <= 120 && menu_draw_counter > 110)
+		if (menu_draw_counter <= 120 && menu_draw_counter > 110)
 			g.drawImage(Assets.menu3, 0, 0);
-		if(menu_draw_counter <= 110 && menu_draw_counter > 100 )
+		if (menu_draw_counter <= 110 && menu_draw_counter > 100)
 			g.drawImage(Assets.menu4, 0, 0);
-		if(menu_draw_counter <= 100 && menu_draw_counter > 90 )
+		if (menu_draw_counter <= 100 && menu_draw_counter > 90)
 			g.drawImage(Assets.menu5, 0, 0);
-		if(menu_draw_counter <= 90 && menu_draw_counter > 80 )
+		if (menu_draw_counter <= 90 && menu_draw_counter > 80)
 			g.drawImage(Assets.menu6, 0, 0);
-		if(menu_draw_counter <= 80 && menu_draw_counter > 70 )
+		if (menu_draw_counter <= 80 && menu_draw_counter > 70)
 			g.drawImage(Assets.menu7, 0, 0);
-		if(menu_draw_counter <= 70 && menu_draw_counter > 60 )
+		if (menu_draw_counter <= 70 && menu_draw_counter > 60)
 			g.drawImage(Assets.menu8, 0, 0);
-		if(menu_draw_counter <= 60 && menu_draw_counter > 50 )
+		if (menu_draw_counter <= 60 && menu_draw_counter > 50)
 			g.drawImage(Assets.menu9, 0, 0);
-		if(menu_draw_counter <= 50 && menu_draw_counter > 40 )
+		if (menu_draw_counter <= 50 && menu_draw_counter > 40)
 			g.drawImage(Assets.menu10, 0, 0);
-		if(menu_draw_counter <= 40 && menu_draw_counter > 30 )
+		if (menu_draw_counter <= 40 && menu_draw_counter > 30)
 			g.drawImage(Assets.menu11, 0, 0);
-		if(menu_draw_counter <= 30 && menu_draw_counter > 20 )
+		if (menu_draw_counter <= 30 && menu_draw_counter > 20)
 			g.drawImage(Assets.menu12, 0, 0);
-		if(menu_draw_counter <= 20 && menu_draw_counter > 10 )
+		if (menu_draw_counter <= 20 && menu_draw_counter > 10)
 			g.drawImage(Assets.menu13, 0, 0);
-		if(menu_draw_counter <= 10 && menu_draw_counter > 0 )
+		if (menu_draw_counter <= 10 && menu_draw_counter > 0)
 			g.drawImage(Assets.menu14, 0, 0);
 		g.drawImage(Assets.button1, 114, 232);
 		g.drawImage(Assets.button2, 314, 232);
 		g.drawImage(Assets.button3, 514, 232);
 		g.drawImage(Assets.musicButton, 730, 20);
-		
+
 		menu_draw_counter--;
-		if(menu_draw_counter == 0)
+		if (menu_draw_counter == 0)
 			menu_draw_counter = MENU_DRAW_COUNTER;
-		
-		
-		
+
 	}
 
 	@Override
@@ -120,7 +131,7 @@ public class MainMenuScreen extends Screen implements Constants {
 
 	@Override
 	public void backButton() {
-        android.os.Process.killProcess(android.os.Process.myPid());
+		android.os.Process.killProcess(android.os.Process.myPid());
 
 	}
 }

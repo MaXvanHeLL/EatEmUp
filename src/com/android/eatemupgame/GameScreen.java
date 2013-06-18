@@ -48,6 +48,7 @@ public class GameScreen extends Screen implements Constants {
 			Breathing3, Breathing4, Breathing5;
 	private URL base; // for loading the images
 	private Graphics second;
+	private int score;
 
 	public GameScreen(Game game) {
 		super(game);
@@ -70,10 +71,10 @@ public class GameScreen extends Screen implements Constants {
 		}
 		enemies = new Vector<Dino>();
 		background = new Background(BACKGROUND_LEFT, BACKGROUND_TOP);
-		calculation = new Calculation(monty, enemies, background// , input
-		);
+		calculation = new Calculation(monty, enemies, background);
 
 		game_over_counter = GAME_OVER_COUNTER_MAX;
+		score = 0;
 
 		backgroundImage = Assets.background;
 
@@ -123,13 +124,16 @@ public class GameScreen extends Screen implements Constants {
 	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
 
 		int len = touchEvents.size();
+
+		Log.d("touch events", Integer.toString(len));
+
 		for (int i = 0; i < len; i++) {
 
 			TouchEvent event = touchEvents.get(i);
 
-			
-			if (game.getInput().isTouchDown(i)) {
-				// Log.d("blalba", Integer.toString(event.x));
+			// game.getInput().isTouchDown(i)
+			if (game.getInput().isTouchDown(i) || len > 0) {
+				// Log.d("blalba", "true");
 
 				monty.setMoveToX(event.x - SCREEN_RESOLUTION_X / 2);
 				monty.setMoveToY(event.y - SCREEN_RESOLUTION_Y / 2);
@@ -138,22 +142,34 @@ public class GameScreen extends Screen implements Constants {
 					monty.setStatus(STATUS.WALK);
 			} else if (monty.getStatus() == STATUS.WALK)
 				monty.setStatus(STATUS.IDLE);
+			if (event.type == TouchEvent.TOUCH_UP) {
+				if (inBounds(event, 700, 0, 800, 100)
+						&& Assets.theme.isPlaying()) {
+					Log.d("YYYYYY", "OOOOOOOFFFFFF");
+					Assets.theme.stop();
+				}
+
+				else if (inBounds(event, 700, 0, 800, 100)
+						&& Assets.theme.isStopped()) {
+					Log.d("YYYYYY", "OOOOOOOONNNNNNN");
+					Assets.theme.play();
+				}
+			}
 		}
 
 		if (enemies.size() < MAX_ENEMIES) // max amount of enemies
 		{
-			
+
 			if (enemies.size() < 1)
 				addNewEnemy();
-			
+
 			if (enemies.size() < MIN_ENEMIES)
 				if (random.nextInt(ENEMY_SPAWN_CHANCE_MIN) == 0)
 					addNewEnemy();
-					
+
 			if (random.nextInt(ENEMY_SPAWN_CHANCE) == 0)
 				addNewEnemy();
-			
-		
+
 		}
 		possibleDirChange();
 		calculation.calculate();
@@ -171,6 +187,7 @@ public class GameScreen extends Screen implements Constants {
 
 	private void updatePaused(List<TouchEvent> touchEvents) {
 		int len = touchEvents.size();
+
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_UP) {
@@ -306,7 +323,8 @@ public class GameScreen extends Screen implements Constants {
 	public void checkDeadDinos() {
 		checkEnemyDespawn();
 
-		Log.d("AAAAAAAAAAAAAAAAAAAAAAAAA", (Float.toString(game_over_counter)));
+		// Log.d("AAAAAAAAAAAAAAAAAAAAAAAAA",
+		// (Float.toString(game_over_counter)));
 
 		game_over_counter -= 0.1;
 
@@ -330,6 +348,7 @@ public class GameScreen extends Screen implements Constants {
 		int y = curEnemy.getPosY() - monty.getPosY() + background.getPosY();
 		int r = (int) Math.sqrt(x * x + y * y);
 		if (r < EAT_RADIUS && curEnemy.getStatus() != STATUS.DIE) {
+			score++;
 			curEnemy.setStatus(STATUS.DIE);
 			game_over_counter += GAME_OVER_COUNTER_BONUS;
 			if (game_over_counter > GAME_OVER_COUNTER_MAX)
@@ -500,14 +519,17 @@ public class GameScreen extends Screen implements Constants {
 
 	private void drawRunningUI() {
 		Graphics g = game.getGraphics();
-		
+
 		float hunger = game_over_counter;
-		
-		g.drawRect(30, 30, ((int)hunger) * 2, 15,  -16711936);
-		g.drawLine(28, 28, (int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 28,  -16777216);
-		g.drawLine(28, 45, (int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 45,  -16777216);
-		g.drawLine(28, 28, 28, 45,  -16777216);
-		g.drawLine((int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 28, (int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 45,  -16777216);
+
+		g.drawRect(30, 30, ((int) hunger) * 2, 15, -16711936);
+		g.drawLine(28, 28, (int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 28,
+				-16777216);
+		g.drawLine(28, 45, (int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 45,
+				-16777216);
+		g.drawLine(28, 28, 28, 45, -16777216);
+		g.drawLine((int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 28,
+				(int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 45, -16777216);
 
 	}
 

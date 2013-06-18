@@ -42,6 +42,7 @@ public interface Constants {
 	public static final int ANIMATION_PIC_DURATION = 50;
 	
 	public static int MENU_DRAW_COUNTER = 140;
+	
 
 	public static enum STATUS {
 		IDLE, WALK, ATTACK, DIE

@@ -51,7 +51,7 @@ public class SingleTouchHandler implements TouchHandler {
             case MotionEvent.ACTION_UP:
                 touchEvent.type = TouchEvent.TOUCH_UP;
                 isTouched = false;
-                break;
+                return true;
             }
             
             touchEvent.x = touchX = (int)(event.getX() * scaleX);
@@ -65,11 +65,17 @@ public class SingleTouchHandler implements TouchHandler {
     @Override
     public boolean isTouchDown(int pointer) {
         synchronized(this) {
-            if(pointer == 0)
+            //if(pointer == 0)
                 return isTouched;
-            else
-                return false;
+           // else
+           //     return false;
         }
+    }
+    
+    public void setTouchDown () {
+    	synchronized(this) {
+    		isTouched = true;
+    	}
     }
 
     @Override
