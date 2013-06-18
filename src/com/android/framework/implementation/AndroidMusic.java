@@ -14,13 +14,20 @@ import com.android.framework.Music;
 public class AndroidMusic implements Music, OnCompletionListener, OnSeekCompleteListener, OnPreparedListener, OnVideoSizeChangedListener {
     MediaPlayer mediaPlayer;
     boolean isPrepared = false;
+    AssetFileDescriptor musicFile;
 
     public AndroidMusic(AssetFileDescriptor assetDescriptor) {
-        mediaPlayer = new MediaPlayer();
+        musicFile = assetDescriptor;
+        initializeMusic();
+    }
+    
+    @Override
+    public void initializeMusic() {
+    	mediaPlayer = new MediaPlayer();
         try {
-            mediaPlayer.setDataSource(assetDescriptor.getFileDescriptor(),
-                    assetDescriptor.getStartOffset(),
-                    assetDescriptor.getLength());
+            mediaPlayer.setDataSource(musicFile.getFileDescriptor(),
+                    musicFile.getStartOffset(),
+                    musicFile.getLength());
             mediaPlayer.prepare();
             isPrepared = true;
             mediaPlayer.setOnCompletionListener(this);
@@ -97,7 +104,6 @@ public class AndroidMusic implements Music, OnCompletionListener, OnSeekComplete
     public void stop() {
     	 if (this.mediaPlayer.isPlaying() == true){
         this.mediaPlayer.stop();
-        
        synchronized (this) {
            isPrepared = false;
         }}

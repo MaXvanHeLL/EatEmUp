@@ -6,6 +6,8 @@ public interface Music {
     public void stop();
 
     public void pause();
+    
+    public void initializeMusic();
 
     public void setLooping(boolean looping);
 
