@@ -28,7 +28,7 @@ public class GameScreen extends Screen implements Constants {
 	GameState state = GameState.Ready;
 
 	// Variable Setup
-	Paint paint, paint2, paint3, paint4, paint5;
+	Paint paint, paint2, paint3, paint4, paint5, paint6;
 
 	Random random;
 	Dino monty;
@@ -102,6 +102,12 @@ public class GameScreen extends Screen implements Constants {
 		paint5.setTextAlign(Paint.Align.CENTER);
 		paint5.setAntiAlias(true);
 		paint5.setColor(Color.RED);
+		
+		paint6 = new Paint();
+		paint6.setTextSize(75);
+		paint6.setTextAlign(Paint.Align.CENTER);
+		paint6.setAntiAlias(true);
+		paint6.setColor(Color.YELLOW);
 
 	}
 
@@ -130,18 +136,13 @@ public class GameScreen extends Screen implements Constants {
 		// When the user touches the screen, the game begins.
 		// state now becomes GameState.Running.
 		// Now the updateRunning() method will be called!
-
+		
 		if (touchEvents.size() > 0)
 			state = GameState.Running;
 	}
 
 	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
 		
-		if(Assets.eat.isPlaying())
-		{
-			Log.d("MMMMMMMMMMMMMMM","MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
-		}
-
 		
 		int len = touchEvents.size();
 
@@ -379,9 +380,11 @@ public class GameScreen extends Screen implements Constants {
 			
 			
 			score++;
-			
-			Assets.eat.initializeMusic();
-			Assets.eat.play();
+			if(!Assets.theme.isStopped())
+			{
+				Assets.eat.initializeMusic();
+				Assets.eat.play();
+			}
 			
 			
 			curEnemy.setStatus(STATUS.DIE);
@@ -663,7 +666,8 @@ public class GameScreen extends Screen implements Constants {
 		Graphics g = game.getGraphics();
 
 		g.drawARGB(155, 0, 0, 0);
-		g.drawString("Tap to Start Monty`s Adventure!.", 400, 240, paint);
+		g.drawString("Monty is hungry! Tab to move around", 400, 240, paint);
+		g.drawString("Eat them up... all of them!", 400, 290, paint);
 
 	}
 
@@ -692,7 +696,7 @@ public class GameScreen extends Screen implements Constants {
 		g.drawARGB(155, 0, 0, 0);
 		g.drawString("Resume", 400,260, paint2);
 		g.drawString("Menu", 400, 400, paint2);
-		g.drawString("Current Score:", 350, 100, paint2);
+		g.drawString("Current Score:", 350, 100, paint6);
 		g.drawString(Integer.toString(score), 650, 100, paint3);
 
 	}
@@ -700,10 +704,9 @@ public class GameScreen extends Screen implements Constants {
 	private void drawGameOverUI() {
 		Graphics g = game.getGraphics();
 		g.drawRect(0, 0, 1281, 801, Color.BLACK);
-		g.drawString("GAME OVER.", 400, 240, paint2);
-		g.drawString("Total Score:", 350, 100, paint2);
-		g.drawString(Integer.toString(score), 710, 100, paint3);
-		g.drawString("Tap to return.", 400, 290, paint);
+		g.drawString("Monty is starved :(", 400, 240, paint2);
+		g.drawString("Total Score:", 350, 100, paint6);
+		g.drawString(Integer.toString(score), 600, 100, paint3);
 
 	}
 
@@ -749,7 +752,6 @@ public class GameScreen extends Screen implements Constants {
 			state = GameState.Running;
 			Assets.theme.play();
 		}
-
 	}
 
 	@Override
@@ -760,20 +762,27 @@ public class GameScreen extends Screen implements Constants {
 
 	@Override
 	public void backButton() {
+		if (state == GameState.Ready) 
+			goToMenu();
+		
+	
 		pause();
 	}
 
 	private void nullify() {
 
-		// Set all variables to null. You will be recreating them in the
-		// constructor.
-		/*
-		 * paint = null; bg1 = null; bg2 = null; robot = null; hb = null; hb2 =
-		 * null; currentSprite = null; character = null; character2 = null;
-		 * character3 = null; heliboy = null; heliboy2 = null; heliboy3 = null;
-		 * heliboy4 = null; heliboy5 = null; anim = null; hanim = null;
-		 */
-
+		paint = null;
+		paint2 = null;
+		paint3 = null;
+		paint4 = null;
+		paint5 = null;
+		random = null;
+		monty = null;
+		randomColorMap = null;
+		enemies = null;
+		background = null;
+		calculation = null;
+		
 		// Call garbage collector to clean up memory.
 		System.gc();
 	}

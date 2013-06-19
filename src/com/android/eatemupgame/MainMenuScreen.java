@@ -30,20 +30,21 @@ public class MainMenuScreen extends Screen implements Constants {
 
 			if (event.type == TouchEvent.TOUCH_UP) {
 
-				if (inBounds(event, 114, 232, 254, 390)) {
-					Log.d("YYYYYY", "TOUCHED!");
+				if (inBounds(event, 114, 232, 100, 100)) {
+					Log.d("YYYYYY", "FIRST!");
 					Assets.background = g.newImage("background1.png",
 							ImageFormat.RGB565);
 					game.setScreen(new GameScreen(game));
 				}
-				if (inBounds(event, 314, 232, 454, 390)) {
-					Log.d("YYYYYY", "TOUCHED!");
+				if (inBounds(event, 314, 232, 100, 100)) {
+					Log.d("YYYYYY", "SECOND!");
 					Assets.background = g.newImage("background2.png",
 							ImageFormat.RGB565);
+					//
 					game.setScreen(new GameScreen(game));
 				}
-				if (inBounds(event, 514, 232, 654, 390)) {
-					Log.d("YYYYYY", "TOUCHED!");
+				if (inBounds(event, 514, 232, 100, 100)) {
+					Log.d("YYYYYY", "THIRD!");
 					Assets.background = g.newImage("background3.png",
 							ImageFormat.RGB565);
 					game.setScreen(new GameScreen(game));
