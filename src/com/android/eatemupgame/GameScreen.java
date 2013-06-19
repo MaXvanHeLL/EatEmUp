@@ -209,6 +209,9 @@ public class GameScreen extends Screen implements Constants {
 
 				if (inBounds(event, 0, 300, 800, 240)) {
 					nullify();
+					if(!(Assets.theme.isMute())){
+						Assets.theme.play();
+					}
 					goToMenu();
 				}
 			}
