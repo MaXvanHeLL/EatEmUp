@@ -227,7 +227,7 @@ public class GameScreen extends Screen implements Constants {
 				}
 
 
-				if (inBounds(event, 0, 240, 800, 240)) {
+				if (inBounds(event, 0, 300, 800, 240)) {
 					nullify();
 					goToMenu();
 				}
@@ -241,7 +241,6 @@ public class GameScreen extends Screen implements Constants {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_DOWN) {
 				if (inBounds(event, 0, 0, 800, 480)) {
-					// nullify();
 					game.setScreen(new MainMenuScreen(game));
 					return;
 				}
@@ -686,7 +685,7 @@ public class GameScreen extends Screen implements Constants {
 				(int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 45, -16777216);
 		
 		g.drawString("Score:", 400, 50, paint4);
-		g.drawString(Integer.toString(score), 480, 50, paint5);
+		g.drawString(Integer.toString(score), 500, 50, paint5);
 
 	}
 
@@ -697,7 +696,7 @@ public class GameScreen extends Screen implements Constants {
 		g.drawString("Resume", 400,260, paint2);
 		g.drawString("Menu", 400, 400, paint2);
 		g.drawString("Current Score:", 350, 100, paint6);
-		g.drawString(Integer.toString(score), 650, 100, paint3);
+		g.drawString(Integer.toString(score), 670, 100, paint3);
 
 	}
 
