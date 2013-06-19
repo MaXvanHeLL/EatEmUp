@@ -45,11 +45,13 @@ public class MainMenuScreen extends Screen implements Constants {
 				if (inBounds(event, 700, 0, 800, 100)
 						&& Assets.theme.isPlaying()) {
 					Assets.theme.stop();
+					Assets.theme.setMute(true);
 				}
 
 				else if (inBounds(event, 700, 0, 800, 100)
 						&& Assets.theme.isStopped()) {
 					Assets.theme.play();
+					Assets.theme.setMute(false);
 				}
 			}
 		}
