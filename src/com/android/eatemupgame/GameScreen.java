@@ -152,11 +152,13 @@ public class GameScreen extends Screen implements Constants {
 				if (inBounds(event, SCREEN_RESOLUTION_X - 100, 0,
 						SCREEN_RESOLUTION_X, 100) && Assets.theme.isPlaying()) {
 					Assets.theme.stop();
+					Assets.theme.setMute(true);
 				}
 
 				else if (inBounds(event, SCREEN_RESOLUTION_X - 100, 0,
 						SCREEN_RESOLUTION_X, 100) && Assets.theme.isStopped()) {
 					Assets.theme.play();
+					Assets.theme.setMute(false);
 				}
 			}
 		}
@@ -651,7 +653,7 @@ public class GameScreen extends Screen implements Constants {
 				(int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 45, -16777216);
 
 		g.drawString("Score:", 400, 50, paint4);
-		g.drawString(Integer.toString(score), 500, 50, paint5);
+		g.drawString(Integer.toString(score), 520, 50, paint5);
 
 	}
 
@@ -663,7 +665,7 @@ public class GameScreen extends Screen implements Constants {
 		g.drawString("Resume", 400, 260, paint2);
 		g.drawString("Menu", 400, 400, paint2);
 		g.drawString("Current Score:", 350, 100, paint6);
-		g.drawString(Integer.toString(score), 670, 100, paint3);
+		g.drawString(Integer.toString(score), 700, 100, paint3);
 
 	}
 
@@ -672,7 +674,8 @@ public class GameScreen extends Screen implements Constants {
 		g.drawRect(0, 0, 1281, 801, Color.BLACK);
 		g.drawString("Monty is starved :(", 400, 240, paint2);
 		g.drawString("Total Score:", 350, 100, paint6);
-		g.drawString(Integer.toString(score), 600, 100, paint3);
+		g.drawString("Tap to return...", 400, 320, paint);
+		g.drawString(Integer.toString(score), 650, 100, paint3);
 
 	}
 
@@ -714,7 +717,9 @@ public class GameScreen extends Screen implements Constants {
 	public void resume() {
 		if (state == GameState.Paused) {
 			state = GameState.Running;
-			Assets.theme.play();
+			
+			if(!Assets.theme.isMute())
+				Assets.theme.play();
 		}
 	}
 

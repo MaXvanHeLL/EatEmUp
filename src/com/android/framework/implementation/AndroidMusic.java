@@ -15,11 +15,14 @@ public class AndroidMusic implements Music, OnCompletionListener, OnSeekComplete
     MediaPlayer mediaPlayer;
     boolean isPrepared = false;
     AssetFileDescriptor musicFile;
+    boolean isMute = false;
 
     public AndroidMusic(AssetFileDescriptor assetDescriptor) {
         musicFile = assetDescriptor;
         initializeMusic();
     }
+    
+    
     
     @Override
     public void initializeMusic() {
@@ -139,5 +142,17 @@ public class AndroidMusic implements Music, OnCompletionListener, OnSeekComplete
 	@Override
 	public void onVideoSizeChanged(MediaPlayer player, int width, int height) {
 		
+	}
+
+
+
+	public boolean isMute() {
+		return isMute;
+	}
+
+
+
+	public void setMute(boolean isMute) {
+		this.isMute = isMute;
 	}
 }

@@ -3,6 +3,10 @@ package com.android.framework;
 public interface Music {
     public void play();
 
+
+	public boolean isMute();
+	public void setMute(boolean isMute);
+    
     public void stop();
 
     public void pause();

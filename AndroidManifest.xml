@@ -14,11 +14,11 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon"
-        android:label="EatEmUpGame" >
+        android:label="EatEmUp" >
         <activity
             android:name=".SampleGame"
             android:configChanges="keyboard|keyboardHidden|orientation"
-            android:label="EatEmEupGame"
+            android:label="EatEmUp"
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
