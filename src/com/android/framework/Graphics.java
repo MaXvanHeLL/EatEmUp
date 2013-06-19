@@ -2,8 +2,6 @@ package com.android.framework;
 
 
 
-import com.android.eatemupgame.Dino;
-
 import android.graphics.Paint;
 
 public interface Graphics {

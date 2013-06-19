@@ -14,7 +14,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 
-import com.android.eatemupgame.Dino;
 import com.android.framework.Graphics;
 import com.android.framework.Image;
 

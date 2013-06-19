@@ -2,7 +2,6 @@ package com.android.eatemupgame;
 
 import java.util.List;
 
-import android.content.res.Resources.Theme;
 import android.util.Log;
 
 import com.android.framework.Game;

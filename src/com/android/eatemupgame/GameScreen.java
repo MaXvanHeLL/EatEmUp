@@ -1,16 +1,17 @@
 package com.android.eatemupgame;
 
-import java.net.URL;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
-import android.view.Display;
+
 
 import com.android.framework.Game;
 import com.android.framework.Graphics;
@@ -18,7 +19,6 @@ import com.android.framework.Image;
 import com.android.framework.Input.TouchEvent;
 import com.android.framework.Screen;
 import com.android.eatemupgame.Assets;
-import com.android.eatemupgame.GameScreen.GameState;
 
 public class GameScreen extends Screen implements Constants {
 	enum GameState {
@@ -38,20 +38,14 @@ public class GameScreen extends Screen implements Constants {
 
 	Vector<Dino> enemies;
 	Background background;
-	// Input input;
-	Draw drawInstance;
 	Calculation calculation;
-	Draw draw;
+	
 	private float game_over_counter;
 
-	private Image backgroundImage, image, dinoImageBreathing1,
-			dinoImageBreathing2, dinoImageBreathing3, dinoImageWalking1,
-			dinoImageWalking2, dinoImageWalking3, Breathing1, Breathing2,
-			Breathing3, Breathing4, Breathing5;
-	private URL base; // for loading the images
-	private Graphics second;
+	private Image backgroundImage;
 	private int score;
 
+	@SuppressLint("UseSparseArrays")
 	public GameScreen(Game game) {
 		super(game);
 
@@ -156,28 +150,27 @@ public class GameScreen extends Screen implements Constants {
 		for (int i = 0; i < len; i++) {
 
 			TouchEvent event = touchEvents.get(i);
-
-
 			
-			if (game.getInput().isTouchDown(i) || len > 0) {
+			//if (game.getInput().isTouchDown(i)) {
+			if(inBounds(event, 0, 0, SCREEN_RESOLUTION_X - 100, SCREEN_RESOLUTION_Y)
+					|| inBounds(event, SCREEN_RESOLUTION_X - 100, 100, SCREEN_RESOLUTION_X, SCREEN_RESOLUTION_Y))
+			{
 				Log.d("blalba", Integer.toString(event.x));
-
-				// Log.d("blalba", Integer.toString(event.x));
 
 				monty.setMoveToX(event.x - SCREEN_RESOLUTION_X / 2);
 				monty.setMoveToY(event.y - SCREEN_RESOLUTION_Y / 2);
 
 				if (monty.getStatus() == STATUS.IDLE)
 					monty.setStatus(STATUS.WALK);
-			} else if (monty.getStatus() == STATUS.WALK)
-				monty.setStatus(STATUS.IDLE);
+			
+			}
 			if (event.type == TouchEvent.TOUCH_UP) {
-				if (inBounds(event, 700, 0, 800, 100)
+				if (inBounds(event, SCREEN_RESOLUTION_X - 100, 0, SCREEN_RESOLUTION_X, 100)
 						&& Assets.theme.isPlaying()) {
 					Assets.theme.stop();
 				}
 
-				else if (inBounds(event, 700, 0, 800, 100)
+				else if (inBounds(event, SCREEN_RESOLUTION_X - 100, 0, SCREEN_RESOLUTION_X, 100)
 						&& Assets.theme.isStopped()) {
 					Assets.theme.play();
 				}
@@ -219,6 +212,8 @@ public class GameScreen extends Screen implements Constants {
 	private void updatePaused(List<TouchEvent> touchEvents) {
 		int len = touchEvents.size();
 
+		monty.setStatus(STATUS.IDLE);
+		
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_UP) {

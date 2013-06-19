@@ -2,12 +2,11 @@ package com.android.eatemupgame;
 
 import com.android.framework.Game;
 import com.android.framework.Graphics;
-import com.android.framework.Image;
 import com.android.framework.Graphics.ImageFormat;
 import com.android.framework.Screen;
 import com.android.eatemupgame.Assets;
 
-public class LoadingScreen extends Screen {
+public class LoadingScreen extends Screen implements Constants {
 	public LoadingScreen(Game game) {
 		
 		super(game);
@@ -127,7 +126,7 @@ public class LoadingScreen extends Screen {
 	@Override
 	public void paint(float deltaTime) {
 		Graphics g = game.getGraphics();
-		g.drawImage(Assets.splash, 0, 0);
+		g.drawImage(Assets.splash, SCREEN_RESOLUTION_X / 2 - 200 , SCREEN_RESOLUTION_Y / 2 - 80);
 	}
 
 	@Override
