@@ -580,7 +580,6 @@ public class GameScreen extends Screen implements Constants {
 	}
 	
 	
-	
 	private Image selectEnemyImage(Dino dino) {
 
 		if (dino.getColor() == randomColorMap.get(0)) {
@@ -775,6 +774,7 @@ public class GameScreen extends Screen implements Constants {
 		paint3 = null;
 		paint4 = null;
 		paint5 = null;
+		paint6 = null;
 		random = null;
 		monty = null;
 		randomColorMap = null;
