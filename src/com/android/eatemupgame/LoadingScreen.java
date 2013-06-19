@@ -15,9 +15,6 @@ public class LoadingScreen extends Screen implements Constants {
 	@Override
 	public void update(float deltaTime) {
 		Graphics g = game.getGraphics();
-		
-		//This is how you would load a sound if you had one.
-		//Assets.click = game.getAudio().createSound("explode.ogg");
 	
 		Assets.menu1 = g.newImage("menu1.png", ImageFormat.RGB565);
 		Assets.menu2 = g.newImage("menu2.png", ImageFormat.RGB565);
@@ -117,8 +114,6 @@ public class LoadingScreen extends Screen implements Constants {
 		Assets.musicON = g.newImage("musicON.png", ImageFormat.RGB565);
 		Assets.musicOFF = g.newImage("musicOFF.png", ImageFormat.RGB565);
 		
-		
-		//Assets.background = g.newImage("background.png", ImageFormat.RGB565);
 		game.setScreen(new MainMenuScreen(game));
 
 	}

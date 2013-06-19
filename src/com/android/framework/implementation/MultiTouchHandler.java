@@ -53,8 +53,7 @@ public class MultiTouchHandler implements TouchHandler {
 				}
 				int pointerId = event.getPointerId(i);
 				if (event.getAction() != MotionEvent.ACTION_MOVE && i != pointerIndex) {
-					// if it's an up/down/cancel/out event, mask the id to see if we should process it for this touch
-					// point
+
 					continue;
 				}
 				switch (action) {

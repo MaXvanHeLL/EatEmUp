@@ -7,15 +7,10 @@ public class Calculation implements Constants {
 	private Vector<Dino> enemies;
 	private Background background;
 
-	// private Input input;
-
-	Calculation(Dino Monty, Vector<Dino> Enemies, Background Background
-	// ,Input Input
-	) {
+	Calculation(Dino Monty, Vector<Dino> Enemies, Background Background) {
 		monty = Monty;
 		enemies = Enemies;
 		background = Background;
-		// input = Input;
 	}
 
 	public void calculate() {

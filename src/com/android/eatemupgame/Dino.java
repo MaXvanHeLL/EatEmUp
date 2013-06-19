@@ -12,7 +12,7 @@ public class Dino implements Constants {
 	private int speed;
 	private int despawn_time;
 	private int imageCounter;
-	
+
 	Dino(int PosX, int PosY, int MoveToX, int MoveToY, String Color, int Speed) {
 		posX = PosX;
 		posY = PosY;

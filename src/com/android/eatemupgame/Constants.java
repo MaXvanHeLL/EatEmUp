@@ -2,7 +2,7 @@ package com.android.eatemupgame;
 
 public interface Constants {
 
-	public static final int SCREEN_RESOLUTION_X = 799; // load Resolution somehow??
+	public static final int SCREEN_RESOLUTION_X = 799;
 	public static final int SCREEN_RESOLUTION_Y = 479;
 	
 	public static final int BACKGROUND_RESOLUTION_X = 999; // 1200 -> from 0 to _1199_!!!

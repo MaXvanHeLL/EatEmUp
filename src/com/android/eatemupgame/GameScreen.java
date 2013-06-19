@@ -1,6 +1,5 @@
 package com.android.eatemupgame;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +9,6 @@ import java.util.Vector;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
-
 
 import com.android.framework.Game;
 import com.android.framework.Graphics;
@@ -39,7 +36,7 @@ public class GameScreen extends Screen implements Constants {
 	Vector<Dino> enemies;
 	Background background;
 	Calculation calculation;
-	
+
 	private float game_over_counter;
 
 	private Image backgroundImage;
@@ -84,25 +81,25 @@ public class GameScreen extends Screen implements Constants {
 		paint2.setTextAlign(Paint.Align.CENTER);
 		paint2.setAntiAlias(true);
 		paint2.setColor(Color.WHITE);
-		
+
 		paint3 = new Paint();
 		paint3.setTextSize(75);
 		paint3.setTextAlign(Paint.Align.CENTER);
 		paint3.setAntiAlias(true);
 		paint3.setColor(Color.GREEN);
-		
+
 		paint4 = new Paint();
 		paint4.setTextSize(40);
 		paint4.setTextAlign(Paint.Align.CENTER);
 		paint4.setAntiAlias(true);
 		paint4.setColor(Color.BLACK);
-		
+
 		paint5 = new Paint();
 		paint5.setTextSize(40);
 		paint5.setTextAlign(Paint.Align.CENTER);
 		paint5.setAntiAlias(true);
 		paint5.setColor(Color.RED);
-		
+
 		paint6 = new Paint();
 		paint6.setTextSize(75);
 		paint6.setTextAlign(Paint.Align.CENTER);
@@ -114,11 +111,6 @@ public class GameScreen extends Screen implements Constants {
 	@Override
 	public void update(float deltaTime) {
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
-
-		// We have four separate update methods in this example.
-		// Depending on the state of the game, we call different update methods.
-		// Refer to Unit 3's code. We did a similar thing without separating the
-		// update methods.
 
 		if (state == GameState.Ready)
 			updateReady(touchEvents);
@@ -132,52 +124,42 @@ public class GameScreen extends Screen implements Constants {
 
 	private void updateReady(List<TouchEvent> touchEvents) {
 
-		// This example starts with a "Ready" screen.
-		// When the user touches the screen, the game begins.
-		// state now becomes GameState.Running.
-		// Now the updateRunning() method will be called!
-		
 		if (touchEvents.size() > 0)
 			state = GameState.Running;
 	}
 
 	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
-		
-		
-		int len = touchEvents.size();
 
-		Log.d("touch events", Integer.toString(len));
+		int len = touchEvents.size();
 
 		for (int i = 0; i < len; i++) {
 
 			TouchEvent event = touchEvents.get(i);
-			
-			//if (game.getInput().isTouchDown(i)) {
-			if(inBounds(event, 0, 0, SCREEN_RESOLUTION_X - 100, SCREEN_RESOLUTION_Y)
-					|| inBounds(event, SCREEN_RESOLUTION_X - 100, 100, SCREEN_RESOLUTION_X, SCREEN_RESOLUTION_Y))
-			{
-				Log.d("blalba", Integer.toString(event.x));
+
+			if (inBounds(event, 0, 0, SCREEN_RESOLUTION_X - 100,
+					SCREEN_RESOLUTION_Y)
+					|| inBounds(event, SCREEN_RESOLUTION_X - 100, 100,
+							SCREEN_RESOLUTION_X, SCREEN_RESOLUTION_Y)) {
 
 				monty.setMoveToX(event.x - SCREEN_RESOLUTION_X / 2);
 				monty.setMoveToY(event.y - SCREEN_RESOLUTION_Y / 2);
 
 				if (monty.getStatus() == STATUS.IDLE)
 					monty.setStatus(STATUS.WALK);
-			
+
 			}
 			if (event.type == TouchEvent.TOUCH_UP) {
-				if (inBounds(event, SCREEN_RESOLUTION_X - 100, 0, SCREEN_RESOLUTION_X, 100)
-						&& Assets.theme.isPlaying()) {
+				if (inBounds(event, SCREEN_RESOLUTION_X - 100, 0,
+						SCREEN_RESOLUTION_X, 100) && Assets.theme.isPlaying()) {
 					Assets.theme.stop();
 				}
 
-				else if (inBounds(event, SCREEN_RESOLUTION_X - 100, 0, SCREEN_RESOLUTION_X, 100)
-						&& Assets.theme.isStopped()) {
+				else if (inBounds(event, SCREEN_RESOLUTION_X - 100, 0,
+						SCREEN_RESOLUTION_X, 100) && Assets.theme.isStopped()) {
 					Assets.theme.play();
 				}
 			}
 		}
-
 
 		if (enemies.size() < MAX_ENEMIES) // max amount of enemies
 		{
@@ -185,14 +167,12 @@ public class GameScreen extends Screen implements Constants {
 			if (enemies.size() < 2)
 				addNewEnemy();
 
-
 			if (enemies.size() < MIN_ENEMIES)
 				if (random.nextInt(ENEMY_SPAWN_CHANCE_MIN) == 0)
 					addNewEnemy();
 
 			if (random.nextInt(ENEMY_SPAWN_CHANCE) == 0)
 				addNewEnemy();
-
 
 		}
 		possibleDirChange();
@@ -214,18 +194,16 @@ public class GameScreen extends Screen implements Constants {
 		int len = touchEvents.size();
 
 		monty.setStatus(STATUS.IDLE);
-		
+
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_UP) {
 				if (inBounds(event, 0, 0, 800, 340)) {
 
 					if (!inBounds(event, 0, 0, 35, 35)) {
-						Log.d("BLAAAAAA","RESUUUUUME");
 						resume();
 					}
 				}
-
 
 				if (inBounds(event, 0, 300, 800, 240)) {
 					nullify();
@@ -351,9 +329,6 @@ public class GameScreen extends Screen implements Constants {
 	public void checkDeadDinos() {
 		checkEnemyDespawn();
 
-		// Log.d("AAAAAAAAAAAAAAAAAAAAAAAAA",
-		// (Float.toString(game_over_counter)));
-
 		game_over_counter -= 0.1;
 
 		if (game_over_counter <= 0) {
@@ -376,16 +351,13 @@ public class GameScreen extends Screen implements Constants {
 		int y = curEnemy.getPosY() - monty.getPosY() + background.getPosY();
 		int r = (int) Math.sqrt(x * x + y * y);
 		if (r < EAT_RADIUS && curEnemy.getStatus() != STATUS.DIE) {
-			
-			
+
 			score++;
-			if(!Assets.theme.isStopped())
-			{
+			if (!Assets.theme.isStopped()) {
 				Assets.eat.initializeMusic();
 				Assets.eat.play();
 			}
-			
-			
+
 			curEnemy.setStatus(STATUS.DIE);
 			monty.setStatus(STATUS.ATTACK);
 			monty.setImageCounter(0);
@@ -467,17 +439,15 @@ public class GameScreen extends Screen implements Constants {
 		return Assets.dummyPic;
 	}
 
-	
-	private Image selectMontyImage()
-	{
-		
+	private Image selectMontyImage() {
+
 		int imageCounter = monty.getImageCounter();
-		
+
 		// draw player idle
 		if (monty.getStatus() == STATUS.IDLE) {
 			if (imageCounter >= ANIMATION_PIC_DURATION * 2 - 1)
 				monty.setImageCounter(0);
-			
+
 			if (imageCounter >= 0 && imageCounter < ANIMATION_PIC_DURATION)
 				return Assets.breathingOrange1;
 
@@ -486,67 +456,66 @@ public class GameScreen extends Screen implements Constants {
 				return Assets.breathingOrange2;
 		}
 
-		  // draw player walking
-		  if (monty.getStatus() == STATUS.WALK) {
-		   if (imageCounter >= ANIMATION_PIC_DURATION * 16 - 1)
-		    monty.setImageCounter(0);
-		   
-		   if (imageCounter >= 0 && imageCounter < ANIMATION_PIC_DURATION * 2)
-		    return Assets.walkingOrange1;
+		// draw player walking
+		if (monty.getStatus() == STATUS.WALK) {
+			if (imageCounter >= ANIMATION_PIC_DURATION * 16 - 1)
+				monty.setImageCounter(0);
 
-		   if (imageCounter >= ANIMATION_PIC_DURATION * 2
-		     && imageCounter < ANIMATION_PIC_DURATION * 4)
-		    return Assets.walkingOrange21;
-		   
-		   if (imageCounter >= ANIMATION_PIC_DURATION * 4
-		     && imageCounter < ANIMATION_PIC_DURATION * 6)
-		    return Assets.walkingOrange31;
-		   
-		   if (imageCounter >= ANIMATION_PIC_DURATION * 6
-		     && imageCounter < ANIMATION_PIC_DURATION * 8)
-		    return Assets.walkingOrange21;
-		   
-		   if (imageCounter >= ANIMATION_PIC_DURATION * 8
-		     && imageCounter < ANIMATION_PIC_DURATION * 10)
-		    return Assets.walkingOrange1;
-		   
-		   if (imageCounter >= ANIMATION_PIC_DURATION * 10
-		     && imageCounter < ANIMATION_PIC_DURATION * 12)
-		    return Assets.walkingOrange22;
-		   
-		   if (imageCounter >= ANIMATION_PIC_DURATION * 12
-		     && imageCounter < ANIMATION_PIC_DURATION * 14)
-		    return Assets.walkingOrange32;
-		   
-		   if (imageCounter >= ANIMATION_PIC_DURATION * 14
-		     && imageCounter < ANIMATION_PIC_DURATION * 16)
-		    return Assets.walkingOrange22;
-		     
-		  }
+			if (imageCounter >= 0 && imageCounter < ANIMATION_PIC_DURATION * 2)
+				return Assets.walkingOrange1;
+
+			if (imageCounter >= ANIMATION_PIC_DURATION * 2
+					&& imageCounter < ANIMATION_PIC_DURATION * 4)
+				return Assets.walkingOrange21;
+
+			if (imageCounter >= ANIMATION_PIC_DURATION * 4
+					&& imageCounter < ANIMATION_PIC_DURATION * 6)
+				return Assets.walkingOrange31;
+
+			if (imageCounter >= ANIMATION_PIC_DURATION * 6
+					&& imageCounter < ANIMATION_PIC_DURATION * 8)
+				return Assets.walkingOrange21;
+
+			if (imageCounter >= ANIMATION_PIC_DURATION * 8
+					&& imageCounter < ANIMATION_PIC_DURATION * 10)
+				return Assets.walkingOrange1;
+
+			if (imageCounter >= ANIMATION_PIC_DURATION * 10
+					&& imageCounter < ANIMATION_PIC_DURATION * 12)
+				return Assets.walkingOrange22;
+
+			if (imageCounter >= ANIMATION_PIC_DURATION * 12
+					&& imageCounter < ANIMATION_PIC_DURATION * 14)
+				return Assets.walkingOrange32;
+
+			if (imageCounter >= ANIMATION_PIC_DURATION * 14
+					&& imageCounter < ANIMATION_PIC_DURATION * 16)
+				return Assets.walkingOrange22;
+
+		}
 
 		// draw player attacking
 		if (monty.getStatus() == STATUS.ATTACK) {
-			if (imageCounter >= ANIMATION_PIC_DURATION * 5 - 1)
-			{
+			if (imageCounter >= ANIMATION_PIC_DURATION * 5 - 1) {
 				monty.setImageCounter(0);
 				monty.setStatus(STATUS.WALK);
 			}
-			
+
 			if (imageCounter >= 0 && imageCounter < ANIMATION_PIC_DURATION)
 				return Assets.attackingOrange1;
 
 			if (imageCounter >= ANIMATION_PIC_DURATION
 					&& imageCounter < ANIMATION_PIC_DURATION * 2)
 				return Assets.attackingOrange2;
-			
+
 			if (imageCounter >= ANIMATION_PIC_DURATION * 2
 					&& imageCounter < ANIMATION_PIC_DURATION * 3)
 				return Assets.attackingOrange3;
-			
+
 			if (imageCounter >= ANIMATION_PIC_DURATION * 3
 					&& imageCounter < ANIMATION_PIC_DURATION * 4)
 				return Assets.attackingOrange2;
-			
+
 			if (imageCounter >= ANIMATION_PIC_DURATION * 4
 					&& imageCounter < ANIMATION_PIC_DURATION * 5)
 				return Assets.attackingOrange1;
@@ -554,23 +523,22 @@ public class GameScreen extends Screen implements Constants {
 
 		// draw player dying
 		if (monty.getStatus() == STATUS.DIE) {
-			if (imageCounter >= ANIMATION_PIC_DURATION * 4)
-			{
+			if (imageCounter >= ANIMATION_PIC_DURATION * 4) {
 				state = GameState.GameOver;
 				return Assets.dummyPic;
 			}
-			
+
 			if (imageCounter >= 0 && imageCounter < ANIMATION_PIC_DURATION)
 				return Assets.dyingOrange1;
 
 			if (imageCounter >= ANIMATION_PIC_DURATION
 					&& imageCounter < ANIMATION_PIC_DURATION * 2)
 				return Assets.dyingOrange2;
-			
+
 			if (imageCounter >= ANIMATION_PIC_DURATION * 2
 					&& imageCounter < ANIMATION_PIC_DURATION * 3)
 				return Assets.dyingOrange3;
-			
+
 			if (imageCounter >= ANIMATION_PIC_DURATION * 3
 					&& imageCounter < ANIMATION_PIC_DURATION * 4)
 				return Assets.dyingOrange4;
@@ -578,8 +546,7 @@ public class GameScreen extends Screen implements Constants {
 
 		return Assets.dummyPic;
 	}
-	
-	
+
 	private Image selectEnemyImage(Dino dino) {
 
 		if (dino.getColor() == randomColorMap.get(0)) {
@@ -607,12 +574,13 @@ public class GameScreen extends Screen implements Constants {
 					Assets.walkingRed2, Assets.dyingRed1, Assets.dyingRed2,
 					Assets.dyingRed3, Assets.dyingEnemy4);
 		}
-		
+
 		return Assets.dummyPic;
 	}
 
-	private Image selectEnemyImageColor(Dino dino, Image walking1, Image walking2,
-			Image dying1, Image dying2, Image dying3, Image dying4) {
+	private Image selectEnemyImageColor(Dino dino, Image walking1,
+			Image walking2, Image dying1, Image dying2, Image dying3,
+			Image dying4) {
 
 		int imageCounter = dino.getImageCounter();
 
@@ -634,8 +602,7 @@ public class GameScreen extends Screen implements Constants {
 
 		// draw green dying
 		if (dino.getStatus() == STATUS.DIE) {
-			if (imageCounter >= ANIMATION_PIC_DURATION * 4)
-			{
+			if (imageCounter >= ANIMATION_PIC_DURATION * 4) {
 				enemies.removeElement(dino);
 				return Assets.dummyPic;
 			}
@@ -655,7 +622,7 @@ public class GameScreen extends Screen implements Constants {
 					&& imageCounter < ANIMATION_PIC_DURATION * 4)
 				return dying4;
 		}
-		
+
 		return Assets.dummyPic;
 
 	}
@@ -682,7 +649,7 @@ public class GameScreen extends Screen implements Constants {
 		g.drawLine(28, 28, 28, 45, -16777216);
 		g.drawLine((int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 28,
 				(int) GAME_OVER_COUNTER_MAX * 2 + 2 + 30, 45, -16777216);
-		
+
 		g.drawString("Score:", 400, 50, paint4);
 		g.drawString(Integer.toString(score), 500, 50, paint5);
 
@@ -690,9 +657,10 @@ public class GameScreen extends Screen implements Constants {
 
 	private void drawPausedUI() {
 		Graphics g = game.getGraphics();
+
 		// Darken the entire screen so you can display the Paused screen.
 		g.drawARGB(155, 0, 0, 0);
-		g.drawString("Resume", 400,260, paint2);
+		g.drawString("Resume", 400, 260, paint2);
 		g.drawString("Menu", 400, 400, paint2);
 		g.drawString("Current Score:", 350, 100, paint6);
 		g.drawString(Integer.toString(score), 670, 100, paint3);
@@ -721,7 +689,6 @@ public class GameScreen extends Screen implements Constants {
 		else
 			g.drawImage(Assets.musicOFF, 730, 20);
 
-
 		if (state == GameState.Ready)
 			drawReadyUI();
 		if (state == GameState.Running)
@@ -741,7 +708,6 @@ public class GameScreen extends Screen implements Constants {
 			Assets.theme.stop();
 		}
 
-
 	}
 
 	@Override
@@ -754,16 +720,14 @@ public class GameScreen extends Screen implements Constants {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void backButton() {
-		if (state == GameState.Ready) 
+		if (state == GameState.Ready)
 			goToMenu();
-		
-	
+
 		pause();
 	}
 
@@ -781,13 +745,12 @@ public class GameScreen extends Screen implements Constants {
 		enemies = null;
 		background = null;
 		calculation = null;
-		
+
 		// Call garbage collector to clean up memory.
 		System.gc();
 	}
 
 	private void goToMenu() {
-		// TODO Auto-generated method stub
 		game.setScreen(new MainMenuScreen(game));
 
 	}

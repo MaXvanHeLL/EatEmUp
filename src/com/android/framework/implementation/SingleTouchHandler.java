@@ -65,10 +65,7 @@ public class SingleTouchHandler implements TouchHandler {
     @Override
     public boolean isTouchDown(int pointer) {
         synchronized(this) {
-            //if(pointer == 0)
                 return isTouched;
-           // else
-           //     return false;
         }
     }
     

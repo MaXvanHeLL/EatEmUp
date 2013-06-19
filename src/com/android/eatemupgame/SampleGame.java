@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import android.util.Log;
-
 import com.android.framework.Screen;
 import com.android.framework.implementation.AndroidGame;
 
@@ -46,12 +44,12 @@ public class SampleGame extends AndroidGame {
 				sb.append((line + "\n"));
 			}
 		} catch (IOException e) {
-			Log.w("LOG", e.getMessage());
+
 		} finally {
 			try {
 				is.close();
 			} catch (IOException e) {
-				Log.w("LOG", e.getMessage());
+
 			}
 		}
 		return sb.toString();
@@ -71,6 +69,5 @@ public class SampleGame extends AndroidGame {
 		Assets.theme.pause();
 
 	}
-	
-	
+
 }

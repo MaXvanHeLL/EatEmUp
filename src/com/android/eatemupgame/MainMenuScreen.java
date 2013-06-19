@@ -2,8 +2,6 @@ package com.android.eatemupgame;
 
 import java.util.List;
 
-import android.util.Log;
-
 import com.android.framework.Game;
 import com.android.framework.Graphics;
 import com.android.framework.Screen;
@@ -26,25 +24,20 @@ public class MainMenuScreen extends Screen implements Constants {
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
 
-			Log.d("XXXXXX", Integer.toString(event.x));
-
 			if (event.type == TouchEvent.TOUCH_UP) {
 
 				if (inBounds(event, 114, 232, 100, 100)) {
-					Log.d("YYYYYY", "FIRST!");
 					Assets.background = g.newImage("background1.png",
 							ImageFormat.RGB565);
 					game.setScreen(new GameScreen(game));
 				}
 				if (inBounds(event, 314, 232, 100, 100)) {
-					Log.d("YYYYYY", "SECOND!");
 					Assets.background = g.newImage("background2.png",
 							ImageFormat.RGB565);
 					//
 					game.setScreen(new GameScreen(game));
 				}
 				if (inBounds(event, 514, 232, 100, 100)) {
-					Log.d("YYYYYY", "THIRD!");
 					Assets.background = g.newImage("background3.png",
 							ImageFormat.RGB565);
 					game.setScreen(new GameScreen(game));
